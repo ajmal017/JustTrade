@@ -1,0 +1,2 @@
+# JustTrade
+Automated Trading System
