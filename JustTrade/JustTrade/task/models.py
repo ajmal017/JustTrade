@@ -1,8 +1,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from symbols.model import symbols
-from strategy.model import strategies
+from symbols.models import symbols
+from strategy.models import strategies
 from django.utils import timezone
 # Create your models here.
 class tradingTask(models.Model):
