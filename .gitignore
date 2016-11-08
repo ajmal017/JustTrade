@@ -113,3 +113,9 @@ pip-selfcheck.json
 JustTrade/env/
 
 .idea/vcs.xml
+
+*.pyc
+
+*.pyc
+
+*.pyc
