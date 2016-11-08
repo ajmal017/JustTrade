@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from task import urls as task_urls 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^task/',include(task_urls)),
 ]
