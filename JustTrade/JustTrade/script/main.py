@@ -3,10 +3,10 @@
 import time, Queue
 import event, data
 import strategy, TechnicalStrategies
-import portfolio, PortfolioWithSimpleRM
-import execution, ibexecution
+from ..Interactive-Broker.script import portfolio, PortfolioWithSimpleRM
+from ..Interactive-Broker.script import execution, ibexecution
 
-def Execute(realtimeindex,symbol_list,strategy):
+def Execute(realtimeindex,symbol_list,strategy=Mean_Reversion):
 	if realtimeindex:
 		mode = "Realtime"
 
@@ -22,6 +22,7 @@ def Execute(realtimeindex,symbol_list,strategy):
 	    bars = data.RealTimeDataHandler(events, symbol_list)
 	    
 	    #TODO get strategy 
+	  
 	    strategy = TechnicalStrategies.Mean_Reversion(bars, events) #(self, bars, events)
 	    
 	    # (self, bars, events, start_date, initial_capital=100000.0)
