@@ -1,2 +1,0 @@
-MAILTO=wusimo19911125@gmail.com
-0 09 * * * ~/Documents/Interactive-Broker/run.sh
