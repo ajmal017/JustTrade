@@ -7,8 +7,15 @@ from Interactive_Broker.script import event,data
 from Interactive_Broker.script import strategy, TechnicalStrategies
 from Interactive_Broker.script import portfolio, PortfolioWithSimpleRM
 from Interactive_Broker.script import execution, ibexecution
+from task.models import tradeLog
+from task.models import tradingTask
 
 def Execute(realtimeindex = True,symbol_list = ["SPY"],strategy='Mean_Reversion'):
+	
+	tasks = tradingTask.objects.all()
+	task = tasks[0]
+	tradeLog.objects.create(trade_type = task)
+
 	if realtimeindex:
 		mode = "Realtime"
 
@@ -69,6 +76,9 @@ def Execute(realtimeindex = True,symbol_list = ["SPY"],strategy='Mean_Reversion'
 	    time.sleep(60)
 
 	# performace evaluation
-	    port.create_equity_curve_dataframe()
-	    performace_stats = port.output_summary_stats()
-	    print performace_stats 
+        port.create_equity_curve_dataframe()
+        performace_stats = port.output_summary_stats()
+        print performace_stats 
+
+def run():
+    Execute()

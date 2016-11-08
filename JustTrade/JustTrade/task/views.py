@@ -1,23 +1,25 @@
 from django.shortcuts import get_object_or_404, render
 from .models import tradingTask
-from script import main
+from scripts import main
 import json
 # Create your views here.
 
 
 def Trade(request,strategy_id):
-    param = request.POST
+    if request.is_ajax:
 
-    if len(param) == 0:
-        param = json.loads(request.body)
+        task = get_object_or_404(tradingTask,pk = strategy_id)
+
+        # need to fix
+        main(task.real_time_index,task.symbol,task.strategy)
+       
+    else:
+        return HttpRequest(status=400)
 
 
-    task = get_object_or_404(tradingTask,pk = strategy_id)
+def present_trading(request):
 
-    # need to fix
-    main(task.real_time_index,task.symbol,task.strategy)
-    # need to fix
-    return render(request, 'polls/detail.html', {'question': question})
+    return
 
 
 def show_tasks(request):
