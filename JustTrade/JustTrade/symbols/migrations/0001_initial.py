@@ -11,12 +11,11 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='strategies',
+            name='symbols',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=200)),
-                ('filename', models.CharField(max_length=256, blank=True)),
-                ('classname', models.CharField(max_length=256, blank=True)),
+                ('trade_type', models.CharField(default='stock', max_length=200)),
             ],
         ),
     ]
