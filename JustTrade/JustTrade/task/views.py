@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from .models import tradingTask
 from script import main
+import json
 # Create your views here.
 
 
@@ -24,8 +25,14 @@ def show_tasks(request):
     param = request.POST
 
     if len(param) == 0:
-        param = json.loads(request.body)
+        try:
+
+            param = json.loads(request.body)
+
+        except:
+
+            pass
 
     tasks = tradingTask.objects.all()
 
-    return render(request,'template/pick_strategy.html',tasks)
+    return render(request,'pick_strategy.html',{'tasks':tasks})

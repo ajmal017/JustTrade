@@ -8,7 +8,7 @@ from django.utils import timezone
 class tradingTask(models.Model):
     is_active = models.BooleanField(default=True)
     real_time_index = models.BooleanField(default = True)
-    waitingtime = models.IntegerField(blank=False, null=False)  # number of seconds.
+    waitingtime = models.CharField(max_length = 200, default = '30')  # number of seconds.
     symbol = models.ForeignKey(symbols,blank = False)
     strategy = models.ForeignKey(strategies,blank = False)
 
@@ -16,7 +16,7 @@ class tradingTask(models.Model):
     trade_config_json = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class tradeLog(models.Model):
@@ -24,4 +24,4 @@ class tradeLog(models.Model):
     trade_time = models.DateTimeField(default=timezone.now, null=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
