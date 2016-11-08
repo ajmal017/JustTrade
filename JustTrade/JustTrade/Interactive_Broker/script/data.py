@@ -1,5 +1,5 @@
 # data.py
-from pandas.io.data import DataReader
+from pandas_datareader.data import DataReader
 from datetime import datetime
 import os, os.path
 import pandas as pd

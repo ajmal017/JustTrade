@@ -2,13 +2,13 @@
 
 import time, Queue
 
-
-from Interactive_Broker.script import event,data
+from Interactive_Broker.script import event, data
 from Interactive_Broker.script import strategy, TechnicalStrategies
 from Interactive_Broker.script import portfolio, PortfolioWithSimpleRM
 from Interactive_Broker.script import execution, ibexecution
 from task.models import tradeLog
 from task.models import tradingTask
+
 
 def Execute(realtimeindex = True,symbol_list = ["SPY"],strategy='Mean_Reversion'):
 	
@@ -16,10 +16,12 @@ def Execute(realtimeindex = True,symbol_list = ["SPY"],strategy='Mean_Reversion'
 	task = tasks[0]
 	tradeLog.objects.create(trade_type = task)
 
+
 	if realtimeindex:
 		mode = "Realtime"
 
 	if mode == "Realtime":
+
 			# Must Run this while the market is not closed otherwise there will be a 0/0 problem, trying to fix this
 	    ##-------------Initialization-------------------------------------------
 	    # Declare the components with respective parameters
