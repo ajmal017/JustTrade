@@ -1,16 +1,18 @@
 # coding: utf-8
 
 import time, Queue
-import event, data
-import strategy, TechnicalStrategies
-from ..Interactive-Broker.script import portfolio, PortfolioWithSimpleRM
-from ..Interactive-Broker.script import execution, ibexecution
 
-def Execute(realtimeindex,symbol_list,strategy=Mean_Reversion):
+
+from Interactive_Broker.script import event,data
+from Interactive_Broker.script import strategy, TechnicalStrategies
+from Interactive_Broker.script import portfolio, PortfolioWithSimpleRM
+from Interactive_Broker.script import execution, ibexecution
+
+def Execute(realtimeindex = True,symbol_list = ["SPY"],strategy='Mean_Reversion'):
 	if realtimeindex:
 		mode = "Realtime"
 
-	if mode = "Realtime":
+	if mode == "Realtime":
 			# Must Run this while the market is not closed otherwise there will be a 0/0 problem, trying to fix this
 	    ##-------------Initialization-------------------------------------------
 	    # Declare the components with respective parameters
