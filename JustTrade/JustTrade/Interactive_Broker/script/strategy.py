@@ -2,7 +2,7 @@ import datetime
 import numpy as np
 import pandas as pd
 import Queue
-from task.models import tradeLog
+from tasks.models import tradeLog
 from abc import ABCMeta, abstractmethod
 
 from event import SignalEvent

@@ -6,8 +6,8 @@ from Interactive_Broker.script import event, data
 from Interactive_Broker.script import strategy, TechnicalStrategies
 from Interactive_Broker.script import portfolio, PortfolioWithSimpleRM
 from Interactive_Broker.script import execution, ibexecution
-from task.models import tradeLog
-from task.models import tradingTask
+from tasks.models import tradeLog
+from tasks.models import tradingTask
 
 
 def Execute(realtimeindex = True,symbol_list = ["SPY"],strategy='Mean_Reversion'):
