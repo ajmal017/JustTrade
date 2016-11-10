@@ -145,6 +145,8 @@ class Mean_Reversion(Strategy):
                     if curr_price > upper_band:
                         signal = SignalEvent(bars[0][0], bars[0][1], 'SHORT', "strong")
                         self.events.put(signal)
+                        return {'name':bars[0][0],'time':bars[0][1], 'type':'SHORT', 'strength':"strong"}
                     elif curr_price < lower_band:
                         signal = SignalEvent(bars[0][0], bars[0][1], 'LONG', "strong")
                         self.events.put(signal)
+                        return {'name':bars[0][0], 'time':bars[0][1], 'type':'LONG', 'strength':"strong"}

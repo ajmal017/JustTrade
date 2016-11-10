@@ -8,9 +8,10 @@ from Interactive_Broker.script import portfolio, PortfolioWithSimpleRM
 from Interactive_Broker.script import execution, ibexecution
 from tasks.models import tradeLog
 from tasks.models import tradingTask
+import json
 
 
-def Execute(pk, realtimeindex=True, symbol_list=["SPY"], strategy='Mean_Reversion'):
+def Execute(pk,realtimeindex=True, symbol_list=["SPY"], strategy='Mean_Reversion'):
 	task = tradingTask.objects.get(pk=pk)
 
 	if realtimeindex:
@@ -52,40 +53,52 @@ def Execute(pk, realtimeindex=True, symbol_list=["SPY"], strategy='Mean_Reversio
 				else:
 					if event is not None:
 						if event.type == 'MARKET':
-							strategy.calculate_signals(event)
+							info = strategy.calculate_signals(event)
 
-							tradeLog.objects.create(trade_type=task)
-							tradeLog.log_type='Market Event'
-							tradeLog.save()
+							log = tradeLog.objects.create(trade_task=task)
+							log.log_type='Market Event'
+							if info:
+								log.log_info = json.dumps(info)
+							else:
+								log.log_info = json.dumps({"info":"stay put"})
+							log.save()
 
-							port.update_timeindex(event)
+							info = port.update_timeindex(event)
 
-							tradeLog.objects.create(trade_type=task)
-							tradeLog.log_type='Portfolio Update'
-							tradeLog.save()
+							log = tradeLog.objects.create(trade_task=task)
+							log.log_type='Portfolio Update'
+							if info:
+								log.log_info = json.dumps(info)
+							else:
+								log.log_info = json.dumps({"info":"no portfolio change"})	
+							log.save()
 
 						elif event.type == 'SIGNAL':
-							port.update_signal(event)
+							info = port.update_signal(event)
 
-							tradeLog.objects.create(trade_type=task)
-							tradeLog.log_type='Portfolio Event'
-							tradeLog.save()
+							log = tradeLog.objects.create(trade_task=task)
+							log.log_type='Portfolio Event'
+							if info:
+								log.log_info = json.dumps(info)
+							else:
+								log.log_info = json.dumps({"info":"no order has placed"})
+							log.save()
 
 
 						elif event.type == 'ORDER':
 							broker.execute_order(event)
 
-							tradeLog.objects.create(trade_type=task)
-							tradeLog.log_type='Order Event'
-							tradeLog.save()
-							# time.sleep(3) # just to make sure the order could be filled by the broker
+							log = tradeLog.objects.create(trade_task=task)
+							log.log_type='Order Event'
+							log.save()
+							time.sleep(3) # just to make sure the order could be filled by the broker
 
 						elif event.type == 'FILL':
 							port.update_fill(event)
 
-							tradeLog.objects.create(trade_type=task)
-							tradeLog.log_type='Order Done'
-							tradeLog.save()
+							log = tradeLog.objects.create(trade_task =task)
+							log.log_type='Order Done'
+							log.save()
 
 							# 0.1-Second heartbeat, accelerate backtesting
 		time.sleep(60)

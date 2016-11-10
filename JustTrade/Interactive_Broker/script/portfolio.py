@@ -142,6 +142,8 @@ class NaivePortfolio(Portfolio):
         # Append the current holdings
         self.all_holdings.append(dh)
 
+        return dh
+
 
     def update_positions_from_fill(self, fill):
         """
@@ -314,6 +316,9 @@ class NaivePortfolio(Portfolio):
         if event.type == 'SIGNAL':
             order_event = self.generate_simple_order(event)
             self.events.put(order_event)
+            
+
+            return {"symbol":order_event.symbol,"order_type":order_event.order_type,"quantity":order_event.quantity,"direction":order_event.direction}
       
     def create_equity_curve_dataframe(self):
         """

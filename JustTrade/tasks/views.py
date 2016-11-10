@@ -18,6 +18,8 @@ def Trade(request,pk):
     task = get_object_or_404(tradingTask,pk = pk)
 
     subprocess.Popen(['python', 'manage.py', 'runscript', 'main'])
+
+
     
        
     #else:
