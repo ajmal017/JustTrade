@@ -23,7 +23,7 @@
                     {% for task in tasks %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td><a href="">{{task.symbol}}</a></td>
+                            <td><a href="/task/trade/{{ task.pk }}/">{{task.symbol}}</a></td>
                             <td>{{task.strategy}}</td>
                             <td>01/01/2016</td>
                             <td>26/04/2016</td>
