@@ -1,25 +1,32 @@
 from django.shortcuts import get_object_or_404, render
-from .models import tradingTask
+from .models import tradingTask,tradeLog
 from scripts import main
 import json
+import subprocess
 # Create your views here.
 
 
-def Trade(request,strategy_id):
-    if request.is_ajax:
+# Page 2 View Controller
+def Trade(request,pk):
+    #if request.is_ajax:
 
-        task = get_object_or_404(tradingTask,pk = strategy_id)
+    task = get_object_or_404(tradingTask,pk = pk)
 
-        # need to fix
-        main(task.real_time_index,task.symbol,task.strategy)
+    subprocess.Popen(['python','manage.py','runscript','main'])
+    
        
-    else:
-        return HttpRequest(status=400)
+    #else:
+    #    return HttpRequest(status=400)
 
 
-def present_trading(request):
+# Page 3 View Controller
+def present_trading(request,strategy_id):
 
-    return
+    task = get_object_or_404(tradingTask,pk = strategy_id)
+    logs = tradeLog.objects.filter(trade_task = task)
+
+
+    return logs[0:5]
 
 
 def show_tasks(request):
@@ -38,3 +45,6 @@ def show_tasks(request):
     tasks = tradingTask.objects.all()
 
     return render(request,'pick_strategy.html',{'tasks':tasks})
+
+
+
