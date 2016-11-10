@@ -12,18 +12,15 @@ from django.http import HttpRequest
 
 
 # Page 2 View Controller
-def Trade(request,pk):
+def trade(request,pk):
     #if request.is_ajax:
 
-    task = get_object_or_404(tradingTask,pk = pk)
+    task = get_object_or_404(tradingTask,pk=pk)
 
     subprocess.Popen(['python', 'manage.py', 'runscript', 'main'])
 
+    return render(request, 'detail.html', {'task': task})
 
-    
-       
-    #else:
-    #    return HttpRequest(status=400)
 
 
 # Page 3 View Controller
@@ -31,7 +28,6 @@ def present_trading(request,strategy_id):
 
     task = get_object_or_404(tradingTask,pk = strategy_id)
     logs = tradeLog.objects.filter(trade_task = task)
-
 
     return logs[0:5]
 
