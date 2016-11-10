@@ -12,16 +12,14 @@ from django.http import HttpRequest
 
 
 # Page 2 View Controller
-def Trade(request,pk):
+def trade(request,pk):
     #if request.is_ajax:
 
     task = get_object_or_404(tradingTask,pk = pk)
 
     subprocess.Popen(['python', 'manage.py', 'runscript', 'main'])
-    
-       
-    #else:
-    #    return HttpRequest(status=400)
+
+    return render(request, 'detail.html')
 
 
 # Page 3 View Controller

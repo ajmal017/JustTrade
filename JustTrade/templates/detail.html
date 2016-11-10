@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-6 col-lg-4">
+        <div class="widget-simple-chart text-right card-box">
+            <div class="circliful-chart" data-dimension="90" data-text="35%" data-width="5" data-fontsize="14" data-percent="35" data-fgcolor="#5fbeaa" data-bgcolor="#505A66"></div>
+            <h3 class="text-success counter">2562</h3>
+            <p class="text-muted text-nowrap">纳斯达克</p>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-4">
+        <div class="widget-simple-chart text-right card-box">
+            <div class="circliful-chart" data-dimension="90" data-text="75%" data-width="5" data-fontsize="14" data-percent="75" data-fgcolor="#3bafda" data-bgcolor="#505A66"></div>
+            <h3 class="text-primary counter">5685</h3>
+            <p class="text-muted text-nowrap">标普500</p>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-4">
+        <div class="widget-simple-chart text-right card-box">
+            <div class="circliful-chart" data-dimension="90" data-text="58%" data-width="5" data-fontsize="14" data-percent="58" data-fgcolor="#f76397" data-bgcolor="#505A66"></div>
+            <h3 class="text-pink">$ <span class="counter">12480</span></h3>
+            <p class="text-muted text-nowrap">道琼斯</p>
+        </div>
+    </div>
+
+</div>
+<!-- end row -->
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card-box">
+            <h4 class="text-dark  header-title m-t-0 m-b-30">Total Revenue</h4>
+
+            <div class="widget-chart text-center">
+                <div id="sparkline1"></div>
+                <ul class="list-inline m-t-15">
+                    <li>
+                        <h5 class="text-muted m-t-20">Target</h5>
+                        <h4 class="m-b-0">$1000</h4>
+                    </li>
+                    <li>
+                        <h5 class="text-muted m-t-20">Last week</h5>
+                        <h4 class="m-b-0">$523</h4>
+                    </li>
+                    <li>
+                        <h5 class="text-muted m-t-20">Last Month</h5>
+                        <h4 class="m-b-0">$965</h4>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-4">
+        <div class="card-box">
+            <h4 class="text-dark header-title m-t-0 m-b-30">Weekly Sales Report</h4>
+
+            <div class="widget-chart text-center">
+                <div id="sparkline3"></div>
+                <ul class="list-inline m-t-15">
+                    <li>
+                        <h5 class="text-muted m-t-20">Target</h5>
+                        <h4 class="m-b-0">$1000</h4>
+                    </li>
+                    <li>
+                        <h5 class="text-muted m-t-20">Last week</h5>
+                        <h4 class="m-b-0">$523</h4>
+                    </li>
+                    <li>
+                        <h5 class="text-muted m-t-20">Last Month</h5>
+                        <h4 class="m-b-0">$965</h4>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!-- end row -->
+
+
+<!--end row/ WEATHER -->
+
+{% include 'tasks/task_list.html' %}
+<!-- end row -->
+{% endblock %}
