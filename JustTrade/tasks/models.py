@@ -24,6 +24,7 @@ class tradingTask(models.Model):
 class tradeLog(models.Model):
     trade_task = models.ForeignKey(tradingTask, blank=False, on_delete=models.CASCADE, related_name='logs')
     trade_time = models.DateTimeField(auto_now_add=True)
+    log_type = models.CharField(max_length=100)
 
     def __str__(self):
         return str(self.id)

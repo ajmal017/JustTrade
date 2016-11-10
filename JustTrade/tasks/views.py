@@ -1,7 +1,9 @@
+import json
 from django.shortcuts import get_object_or_404, render
+from django.http import HttpRequest
+
 from .models import tradingTask
 from scripts import main
-import json
 # Create your views here.
 
 
@@ -23,18 +25,5 @@ def present_trading(request):
 
 
 def show_tasks(request):
-
-    param = request.POST
-
-    if len(param) == 0:
-        try:
-
-            param = json.loads(request.body)
-
-        except:
-
-            pass
-
     tasks = tradingTask.objects.all()
-
-    return render(request,'pick_strategy.html',{'tasks':tasks})
+    return render(request, 'tasks/task_list.html', {'tasks': tasks})

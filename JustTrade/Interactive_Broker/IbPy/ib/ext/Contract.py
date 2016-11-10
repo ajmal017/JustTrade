@@ -6,9 +6,9 @@
 #
 # WARNING: all changes to this file will be lost.
 
-from Interactive_Broker.IbPy.ib.lib.overloading import overloaded
-from Interactive_Broker.IbPy.ib.lib import Cloneable
-from Interactive_Broker.IbPy.ib.ext.Util import Util
+from ..lib.overloading import overloaded
+from ..lib import Cloneable
+from ..ext.Util import Util
 # 
 #  * Contract.java
 #  *
