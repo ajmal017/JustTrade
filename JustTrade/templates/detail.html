@@ -6,7 +6,15 @@
 {% endblock %}
 
 {% block content %}
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+            function call_counter(url) {
+                
+                $.get('updateinfo/', function (data) {
+                    alert(data.logs );
+                });
+            }
+</script>
 <div class="row">
     <div class="col-lg-8">
         <div class="card-box">
@@ -110,10 +118,15 @@
                     <small class="text-warning"><b>fdsf</b></small>
             </div>
         </div>
+        <button onclick="call_counter('http://www.google.com');">
+            I update object 12345
+        </button>
 
     </div>
 
 </div>
 
 <!-- end row -->
+
 {% endblock %}
+

@@ -62,7 +62,8 @@ if mode == "Backtesting":
                         print "Order Done"
 
 # 0.1-Second heartbeat, accelerate backtesting
-                        time.sleep(0.1)
+                        time.sleep(1000)
+        time.sleep(6000)
 
 # performace evaluation
     port.create_equity_curve_dataframe()
@@ -121,7 +122,7 @@ elif mode == "Realtime":
                         print "Order Done"
 
         # 0.1-Second heartbeat, accelerate backtesting
-    time.sleep(60)
+            time.sleep(60)
 
 # performace evaluation
     port.create_equity_curve_dataframe()
