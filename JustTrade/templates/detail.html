@@ -11,6 +11,7 @@
             function call_counter(url) {
                 
                 $.get('updateinfo/', function (data) {
+                    $("#show_strategy").text(data.logs)
                     alert(data.logs );
                 });
             }
@@ -88,6 +89,8 @@
                         <th>Due Date</th>
                         <th>Status</th>
                         <th>Assign</th>
+                        
+                        <div id = 'show_strategy'> </div>
                     </tr>
                     </thead>
                     <tbody>
@@ -95,7 +98,8 @@
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             <td><a href="/task/trade/{{ task.pk }}/">{{task.symbol}}</a></td>
-                            <td>{{task.strategy}}</td>
+                            <td >{{task.strategy}}</td>
+                            
                             <td>01/01/2016</td>
                             <td>26/04/2016</td>
                             <td><span class="label label-info">Released</span></td>
