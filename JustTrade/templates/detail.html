@@ -182,7 +182,7 @@ $(document).ready(function(){
                     for(var i=0; i<=10; i++){
                         $('#time'+i).text(data[i].log_time);
                         $('#info'+i).text(data[i].log_info.info);
-                        $('#type'+i).append("<span class=\"label label-info\">" + data[i].log_type + "<\/span>");
+                        $('#type'+i).replaceWith("<td id=\"type"+i+"\"><span class=\"label label-info\">" + data[i].log_type + "<\/span><\/td>");
 
                     }
                 }
