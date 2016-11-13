@@ -6,7 +6,7 @@
     {% if task.is_active %}
     <span class="label label-success">Strategy Active</span>
     {% else %}
-    <span class="label label-error">Strategy On Hold</span>
+    <span class="label label-danger">Strategy On Hold</span>
     {% endif %}
 {% endblock %}
 
@@ -173,14 +173,19 @@
     <div class="col-lg-4">
         <div class="card-box widget-user">
             <div>
-                    <h4 class="m-t-0 m-b-5">Strategies Description</h4>
-                    <p class="text-muted m-b-5 font-13">kdsahfkjadshfjkdasfhjdsfhdksjlfkjsda</p>
-                    <small class="text-warning"><b>fdsf</b></small>
+                    <h4 class="m-t-0 m-b-5">Strategy Description</h4>
+                {% if not task.is_active %}
+                    <a type="button" href="switch/" class="btn btn-success btn-sm waves-effect w-md waves-light m-b-5">Start Strategy</a>
+                {% else %}
+                    <a type="button" href="switch/" class="btn btn-danger btn-sm waves-effect w-md waves-light m-b-5">Stop Strategy</a>
+                {% endif %}
+
+                    <p class="text-muted m-b-5 font-13">{{ task.strategy.introduction }}</p>
             </div>
         </div>
-        <button id="updatelog">
-            I update object 12345
-        </button>
+{#        <button id="updatelog">#}
+{#            I update object 12345#}
+{#        </button>#}
 
     </div>
 
@@ -193,8 +198,9 @@
 {% block js %}
 <script>
 $(document).ready(function(){
+    {% if task.is_active %}
     function refresh(){
-        function call_counter(){
+        function getLog(){
             $.ajax({
                 type: "GET",
                 dataType: "json",
@@ -209,9 +215,29 @@ $(document).ready(function(){
                 }
             });
         }
-        var interval = setInterval(call_counter,500);
-        call_counter();
+        var interval = setInterval(getLog,500);
+        getLog();
     }
+    refresh();
+    {% else %}
+        function getLog(){
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: 'updateinfo/',
+                success: function (data) {
+                    for(var i=0; i<=10; i++){
+                        $('#time'+i).text(data[i].log_time);
+                        $('#info'+i).text(data[i].log_info.info);
+                        $('#type'+i).replaceWith("<td id=\"type"+i+"\"><span class=\"label label-info\">" + data[i].log_type + "<\/span><\/td>");
+
+                    }
+                }
+            });
+        }
+                getLog();
+
+    {% endif %}
     function getMarketData(){
         $.ajax({
             type: "GET",
@@ -236,7 +262,6 @@ $(document).ready(function(){
         });
     }
     getMarketData();
-    $("#updatelog").click(refresh);
 });
 
 </script>

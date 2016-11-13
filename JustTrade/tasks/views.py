@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from .models import tradingTask, tradeLog
 from scripts import main
@@ -9,6 +9,7 @@ from multiprocessing import Pool
 
 import json
 
+
 # Page 2 View Controller
 def trade(request, pk):
 	task = get_object_or_404(tradingTask, pk=pk)
@@ -16,13 +17,26 @@ def trade(request, pk):
 		subprocess.Popen(['python', 'manage.py', 'runscript', 'main', '--script-args=1'])
 	return render(request, 'detail.html', {'task': task})
 
+
+def task_switch_api(request, pk):
+	task = get_object_or_404(tradingTask, pk=pk)
+	if task.is_active:
+		task.is_active = False
+		task.save()
+	else:
+		task.is_active = True
+		task.save()
+
+	return HttpResponseRedirect('/task/trade/' + pk)
+
+
 # for NLP Trading
-def IBM_trade(request,pk):
-	task = get_object_or_404(tradingTask,pk=pk)
-	symbol_to_name = {'GOOG':'Google','APPL':Apple,"TSLA":Tesla,"BABA":"Alibaba"}
-	name = symbol_to_name[task.symbol] 
-	result = main.Execute(pk,realtimeindex = False,symbol_list = [name])
-	return render(request,'',{"task":task,"result":result})
+def IBM_trade(request, pk):
+	task = get_object_or_404(tradingTask, pk=pk)
+	symbol_to_name = {'GOOG': 'Google', 'APPL': 'Apple', "TSLA": 'Tesla', 'BABA': 'Alibaba'}
+	name = symbol_to_name[task.symbol]
+	result = main.Execute(pk, realtimeindex=False, symbol_list=[name])
+	return render(request, '', {"task": task, "result": result})
 
 
 # Page 3 View Controller
@@ -43,8 +57,8 @@ def present_trading(request, pk):
 
 # backtest view
 def backtest_view(request, pk):
-    task = get_object_or_404(tradingTask,pk=pk)
-    result = main.Execute(pk,realtimeindex = False)
-    subset = result[['datetime', 'equity_curve', 'total']]
-    tuples = [tuple(x) for x in subset.values]
-    return render(request,'backtest.html',{'task':task,'tuples':tuples})
+	task = get_object_or_404(tradingTask, pk=pk)
+	result = main.Execute(pk, realtimeindex=False)
+	subset = result[['datetime', 'equity_curve', 'total']]
+	tuples = [tuple(x) for x in subset.values]
+	return render(request, 'backtest.html', {'task': task, 'tuples': tuples})

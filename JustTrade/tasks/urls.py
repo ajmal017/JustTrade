@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     # url(r'show/$', views.show_tasks, name='show_tasks'),
     url(r'trade/(?P<pk>[0-9]*)/$', views.trade, name='trade'),
+    url(r'trade/(?P<pk>[0-9]*)/switch/$', views.task_switch_api, name='switch'),
     url(r'trade/(?P<pk>[0-9]*)/updateinfo/$', views.present_trading, name='update_info'),
     url(r'trade/(?P<pk>[0-9]*)/backtest/$', views.backtest_view, name='back_test')
 
