@@ -18,7 +18,10 @@
             <h4 class="text-dark  header-title m-t-0 m-b-30" id="comp-name"></h4>
 
             <div class="widget-chart text-center" >
-                <div id="sparkline1"></div>
+                            <div id="combine-chart">
+                                <div id="combine-chart-container" class="flot-chart" style="height: 320px;">
+                                </div>
+                            </div>
 
                 <ul class="list-inline m-t-10">
                     <li style="width: 20%">
@@ -284,7 +287,101 @@ $(document).ready(function(){
     }
     getMarketData();
 });
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "quotes/",
+        success: function (data) {
+            var FlotChart = function () {
+                this.$body = $("body");
+            };
+            //creates Combine Chart
+            FlotChart.prototype.createCombineGraph = function (selector, ticks, labels, datas) {
+                var data = [{
+                    label: labels[0],
+                    data: datas[0],
+                    lines: {
+                        show: true
+                    }
+                },
+                    {
+                        label: labels[1],
+                        data: datas[1],
+                        lines: {
+                            show: true
+                        }
+                    },
+                    {
+                        label: labels[2],
+                        data: datas[2],
+                        lines: {
+                            show: true
+                        }
+                    }];
+                var options = {
+                    series: {
+                        shadowSize: 0
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true,
+                        tickColor: "#98a6ad",
+                        borderWidth: 1,
+                        borderColor: "#58666e"
+                    },
+                    colors: ["#3bafda", "#f76397", "#00b19d"],
+                    tooltip: true,
+                    tooltipOpts: {
+                        defaultTheme: false
+                    },
+                    legend: {
+                        position: "ne",
+                        margin: [0, -24],
+                        noColumns: 0,
+                        labelBoxBorderColor: null,
+                        labelFormatter: function (label, series) {
+                            // just add some space to labes
+                            return '' + label + '&nbsp;&nbsp;';
+                        },
+                        width: 30,
+                        height: 2
+                    },
+                    yaxis: {
+                        tickColor: 'rgba(0,0,0,0.1)', //'#98a6ad',
+                        font: {
+                            color: '#bdbdbd'
+                        }
+                    },
+                    xaxis: {
+                        ticks: ticks,
+                        tickColor: 'rgba(0,0,0,0.1)', //'#98a6ad',
+                        font: {
+                            color: '#bdbdbd'
+                        }
+                    }
+                };
 
+                $.plot($(selector), data, options);
+            },
+
+                //initializing various charts and components
+                    FlotChart.prototype.init = function () {
+                        var Nasdaq = data;
+{#                                    var DJIA = [[0, 311], [1, 630], [2, 447], [3, 371], [4, 267], [5, 205], [6, 310], [7, 360], [8, 430], [9, 610], [10, 262], [11, 324], [12, 474], [13, 559], [14, 668], [15, 392], [16, 489], [17, 539], [18, 628], [19, 580], [20, 440], [21, 355], [22, 468], [23, 184]];#}
+{#                                    var SP500 = [[23, 727], [22, 128], [21, 110], [20, 92], [19, 172], [18, 63], [17, 150], [16, 592], [15, 12], [14, 246], [13, 52], [12, 149], [11, 123], [10, 2], [9, 325], [8, 10], [7, 15], [6, 89], [5, 65], [4, 77], [3, 600], [2, 200], [1, 385], [0, 200]];#}
+                        var ticks = [[0, "9:30"], [1, ""], [2, "10:00"], [3, ""], [4, "10:30"], [5, ""], [6, "11:00"], [7, ""], [8, "11:30"], [9, ""], [10, "12:00"], [11, ""], [12, "12:30"], [13, ""], [14, "13:00"], [15, ""], [16, "13:30"], [17, ""], [18, "14:00"], [19, ""], [20, "14:30"], [21, ""], [22, "15:00"], [23, ""], [24, "15:30"], [25, ""], [26, "16:00"]];
+                        var combinelabels = ["Nasdaq", "DJIA", "S&P 500"];
+                        var combinedatas = [Nasdaq];
+                        this.createCombineGraph("#combine-chart #combine-chart-container", ticks, combinelabels, combinedatas);
+                        //Combine graph data
+                    },
+                //init flotchart
+                    $.FlotChart = new FlotChart, $.FlotChart.Constructor = FlotChart;
+
+
+            $.FlotChart.init();
+
+        }});
 </script>
 {% endblock %}
 

@@ -2,7 +2,8 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 
 from .models import tradingTask, tradeLog
-from scripts import main
+from scripts import main, quote
+
 
 import subprocess
 from multiprocessing import Pool
@@ -53,6 +54,13 @@ def task_log_api(request, pk):
 	json_return = json.dumps(json_return)
 	return HttpResponse(json_return, content_type='application/json')
 
+
+def task_quotes_api(request, pk):
+	task = get_object_or_404(tradingTask, pk=pk)
+	# symbol, time interval in seconds, day
+	data = quote.Quote(task.symbol.name, 300, 1).to_json()
+	# sp500 = quote.GoogleIntradayQuote('IXIC', 300, 1)
+	return HttpResponse(data, content_type='application/json')
 
 # backtest view
 def backtest_view(request, pk):

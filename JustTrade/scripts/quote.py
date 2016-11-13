@@ -1,16 +1,26 @@
-import urllib
+import urllib2
 import time
 import json
 import datetime
 
-
 class Quote(object):
-	DATE_FMT = '%Y-%m-%d'
-	TIME_FMT = '%H:%M:%S'
-
-	def __init__(self):
-		self.symbol = ''
+	def __init__(self, symbol, interval_seconds=300, num_days=5):
 		self.date, self.time, self.open_, self.high, self.low, self.close, self.volume = ([] for _ in range(7))
+		self.symbol = symbol.upper()
+		url_string = "http://www.google.com/finance/getprices?q={0}".format(self.symbol)
+		url_string += "&i={0}&p={1}d&f=d,o,h,l,c,v".format(interval_seconds, num_days)
+		csv = urllib2.urlopen(url_string).readlines()
+		for bar in xrange(7, len(csv)):
+			if csv[bar].count(',') != 5: continue
+			offset, close, high, low, open_, volume = csv[bar].split(',')
+			if offset[0] == 'a':
+				day = float(offset[1:])
+				offset = 0
+			else:
+				offset = float(offset)
+			open_, high, low, close = [float(x) for x in [open_, high, low, close]]
+			dt = datetime.datetime.fromtimestamp(day + (interval_seconds * offset))
+			self.append(dt, open_, high, low, close, volume)
 
 	def append(self, dt, open_, high, low, close, volume):
 		self.date.append(dt.date())
@@ -21,71 +31,23 @@ class Quote(object):
 		self.close.append(float(close))
 		self.volume.append(int(volume))
 
-def to_json(self):
-	json_return = []
-	#  how i calculate the index:
-	# (time - (9*3600+30*60))/ (16*3600 - (9*3600/+30*60)) * 27
-	# 27*(time-34200)/23400
-	for bar in xrange(len(self.close)):
-		(h, m, s) = self.time[bar].strftime('%H:%M:%S').split(':')
-		index_time = int(h) * 3600 + int(m) * 60 + int(s)
-		json_return.append(
-				{'symbol': self.symbol,
-				 'date': self.date[bar].strftime('%Y-%m-%d'),
-				 'time': self.time[bar].strftime('%H:%M:%S'),
-				 'open': self.open_[bar],
-				 'close': self.close[bar],
-				 'volume': self.volume[bar],
-				 'index': 27 * (index_time - 34200) / 23400
-				 })
-	json_return = json.dumps(json_return)
-	return json_return
-
-	def to_csv(self):
-		return ''.join(["{0},{1},{2},{3:.2f},{4:.2f},{5:.2f},{6:.2f},{7}\n".format(self.symbol,
-		                                                                           self.date[bar].strftime('%Y-%m-%d'),
-		                                                                           self.time[bar].strftime('%H:%M:%S'),
-		                                                                           self.open_[bar], self.high[bar],
-		                                                                           self.low[bar], self.close[bar],
-		                                                                           self.volume[bar])
-		                for bar in xrange(len(self.close))])
-
-	def write_csv(self, filename):
-		with open(filename, 'w') as f:
-			f.write(self.to_csv())
-
-	def read_csv(self, filename):
-		self.symbol = ''
-		self.date, self.time, self.open_, self.high, self.low, self.close, self.volume = ([] for _ in range(7))
-		for line in open(filename, 'r'):
-			symbol, ds, ts, open_, high, low, close, volume = line.rstrip().split(',')
-			self.symbol = symbol
-			dt = datetime.datetime.strptime(ds + ' ' + ts, self.DATE_FMT + ' ' + self.TIME_FMT)
-			self.append(dt, open_, high, low, close, volume)
-		return True
-
-	def __repr__(self):
-		return self.to_json()
-
-
-class GoogleIntradayQuote(Quote):
-	''' Intraday quotes from Google. Specify interval seconds and number of days '''
-
-	def __init__(self, symbol, interval_seconds=300, num_days=5):
-		super(GoogleIntradayQuote, self).__init__()
-		self.symbol = symbol.upper()
-		url_string = "http://www.google.com/finance/getprices?q={0}".format(self.symbol)
-		url_string += "&i={0}&p={1}d&f=d,o,h,l,c,v".format(interval_seconds, num_days)
-		csv = urllib.urlopen(url_string).readlines()
-		for bar in xrange(7, len(csv)):
-			if csv[bar].count(',') != 5:
-				continue
-			offset, close, high, low, open_, volume = csv[bar].split(',')
-			if offset[0] == 'a':
-				day = float(offset[1:])
-				offset = 0
-			else:
-				offset = float(offset)
-			open_, high, low, close = [float(x) for x in [open_, high, low, close]]
-			dt = datetime.datetime.fromtimestamp(day + (interval_seconds * offset))
-			self.append(dt, open_, high, low, close, volume)
+	def to_json(self):
+		json_return = []
+		#  how i calculate the index:
+		# (time - (9*3600+30*60))/ (16*3600 - (9*3600/+30*60)) * 27
+		# 27*(time-34200)/23400
+		for bar in xrange(len(self.close)):
+			(h, m, s) = self.time[bar].strftime('%H:%M:%S').split(':')
+			index = 27.0 * ((int(h) * 3600 + int(m) * 60 + int(s))- 34200.0) / 23400.0
+			json_return.append(
+					[
+					 round(index,2),
+					# 'symbol': self.symbol,
+					#  'date': self.date[bar].strftime('%Y-%m-%d'),
+					#  'time': self.time[bar].strftime('%H:%M:%S'),
+					#  'open': self.open_[bar],
+					 self.close[bar]
+					 # 'volume': self.volume[bar],
+					 ])
+		json_return = json.dumps(json_return)
+		return json_return
