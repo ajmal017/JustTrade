@@ -11,7 +11,7 @@ from tasks.models import tradingTask
 import json
 
 
-def Execute(pk,realtimeindex=True,NPL =False, symbol_list=["SPY"], strategy='Mean_Reversion'):
+def Execute(pk,realtimeindex=True,NPL =False, waiting_time = 0.1,symbol_list=["SPY"], strategy='Mean_Reversion'):
 	task = tradingTask.objects.get(pk=pk)
 
 	if realtimeindex:
@@ -173,7 +173,7 @@ def Execute(pk,realtimeindex=True,NPL =False, symbol_list=["SPY"], strategy='Mea
 
 
 							log = tradeLog.objects.create(trade_task=task)
-							time.sleep(0.1)
+							time.sleep(waiting_time)
 
 							log.log_type = 'Portfolio Update'
 							if info:
@@ -182,9 +182,9 @@ def Execute(pk,realtimeindex=True,NPL =False, symbol_list=["SPY"], strategy='Mea
 							else:
 								log.log_info = json.dumps({"info":"no portfolio change"})	
 							log.save()
-							time.sleep(0.1)
+							time.sleep(waiting_time)
 						elif event.type == 'SIGNAL':
-							time.sleep(0.1)
+							time.sleep(waiting_time)
 							info = port.update_signal(event)
 
 							log = tradeLog.objects.create(trade_task=task)
@@ -196,7 +196,7 @@ def Execute(pk,realtimeindex=True,NPL =False, symbol_list=["SPY"], strategy='Mea
 								log.log_info = json.dumps({"info":"no order has placed"})
 							log.save()
 						elif event.type == 'ORDER':
-							time.sleep(0.1)
+							time.sleep(waiting_time)
 							info = broker.execute_order(event)
 
 							log = tradeLog.objects.create(trade_task=task)
@@ -207,9 +207,9 @@ def Execute(pk,realtimeindex=True,NPL =False, symbol_list=["SPY"], strategy='Mea
 							else:
 								log.log_info = json.dumps({"info":"Just Ordered"})
 							log.save()
-							time.sleep(0.1) # just to make sure the order could be filled by the broker
+							time.sleep(waiting_time) # just to make sure the order could be filled by the broker
 						elif event.type == 'FILL':
-							time.sleep(0.1)
+							time.sleep(waiting_time)
 							info = port.update_fill(event)
 
 							log = tradeLog.objects.create(trade_task =task)
@@ -223,13 +223,13 @@ def Execute(pk,realtimeindex=True,NPL =False, symbol_list=["SPY"], strategy='Mea
 
 	# 0.1-Second heartbeat, accelerate backtesting
 	                #time.sleep(0.1)
-	        time.sleep(0.1)
+	        time.sleep(waiting_time)
 
 	# performace evaluation
 	port.create_equity_curve_dataframe()
 	performace_stats = port.output_summary_stats()
 	print performace_stats
-	print port.equity_curve
+	return port.equity_curve
 
 	
 

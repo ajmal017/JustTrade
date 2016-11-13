@@ -44,7 +44,14 @@ def present_trading(request, pk):
 # backtest view
 def backtest_view(request, pk):
     task = get_object_or_404(tradingTask,pk=pk)
-    result = main.Execute(pk,realtimeindex = False)
-    subset = result[['datetime', 'equity_curve', 'total']]
-    tuples = [tuple(x) for x in subset.values]
-    return render(request,'backtest.html',{'task':task,'tuples':tuples})
+    
+    return render(request,'backtest.html',{'task':task})
+
+def backtest_api(request,pk):
+	result = main.Execute(pk,realtimeindex = False,waiting_time = 0)
+	subset = result[['equity_curve']]
+	a = subset.to_records(index = True)
+	tuples = [[x[0].strftime("%Y-%m-%d %H:%M:%S"),x[1]] for x in a]
+	json_return = []
+	json_return.append({'equity_curve':tuples})
+	return HttpResponse(json_return,content_type = 'application/json')
