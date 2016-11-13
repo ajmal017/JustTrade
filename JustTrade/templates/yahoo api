@@ -1,6 +1,6 @@
-https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20("YHOO"%2C"AAPL"%2C"GOOG"%2C"MSFT")&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys
-
 get historical data:
-google
+https://www.google.com/finance/getprices?q=NTES&i=60&p=1d&f=d,c,h,l,o,v
+
 
 get basic info
+https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20("YHOO")&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys

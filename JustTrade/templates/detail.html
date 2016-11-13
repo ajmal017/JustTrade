@@ -13,24 +13,29 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-9">
         <div class="card-box">
-            <h4 class="text-dark  header-title m-t-0 m-b-30">Total Revenue</h4>
+            <h4 class="text-dark  header-title m-t-0 m-b-30" id="comp-name"></h4>
 
-            <div class="widget-chart text-center">
+            <div class="widget-chart text-center" >
                 <div id="sparkline1"></div>
-                <ul class="list-inline m-t-15">
-                    <li>
-                        <h5 class="text-muted m-t-20">Target</h5>
-                        <h4 class="m-b-0">$1000</h4>
+
+                <ul class="list-inline m-t-10">
+                    <li style="width: 20%">
+                        <h4 class="text-muted m-t-25">Now</h4>
+                        <h3 class="m-b-0 text-danger" id="now"></h3>
                     </li>
-                    <li>
-                        <h5 class="text-muted m-t-20">Last week</h5>
-                        <h4 class="m-b-0">$523</h4>
+                    <li style="width: 20%">
+                        <h4 class="text-muted m-t-25">Change</h4>
+                        <h3 class="m-b-0 text-danger" id="change"></h3>
                     </li>
-                    <li>
-                        <h5 class="text-muted m-t-20">Last Month</h5>
-                        <h4 class="m-b-0">$965</h4>
+                    <li style="width: 20%">
+                        <h4 class="text-muted m-t-25">Previous Close</h4>
+                        <h4 class="m-b-0" id="close"></h4>
+                    </li>
+                    <li style="width: 20%">
+                        <h4 class="text-muted m-t-25">Open</h4>
+                        <h4 class="m-b-0" id="open"></h4>
                     </li>
                 </ul>
             </div>
@@ -39,23 +44,40 @@
     </div>
 
 
-    <div class="col-lg-4">
+    <div class="col-lg-3">
         <div class="card-box">
-            <h4 class="text-dark header-title m-t-0 m-b-30">股票信息(52 high之类的)</h4>
+            <h4 class="text-dark header-title m-t-0 m-b-30">Market info</h4>
 
             <div class="widget-chart text-center">
                 <ul class="list-inline m-t-15">
-                    <li>
-                        <h5 class="text-muted m-t-20">Target</h5>
-                        <h4 class="m-b-0">$1000</h4>
+                    <li style="width: 40%">
+                        <h4 class="text-muted m-t-25">Day's High</h4>
+                        <h4 class="m-b-0" id="dayshigh"></h4>
                     </li>
-                    <li>
-                        <h5 class="text-muted m-t-20">Last week</h5>
-                        <h4 class="m-b-0">$523</h4>
+                    <li style="width: 40%">
+                        <h4 class="text-muted m-t-25">Day's Low</h4>
+                        <h4 class="m-b-0" id="dayslow"></h4>
                     </li>
-                    <li>
-                        <h5 class="text-muted m-t-20">Last Month</h5>
-                        <h4 class="m-b-0">$965</h4>
+
+                </ul>
+                <ul class="list-inline m-t-15">
+                    <li style="width: 40%">
+                        <h4 class="text-muted m-t-25">Year's High</h4>
+                        <h4 class="m-b-0" id="yearshigh"></h4>
+                    </li>
+                    <li style="width: 40%">
+                        <h4 class="text-muted m-t-25">Year's Low</h4>
+                        <h4 class="m-b-0" id="yearslow"></h4>
+                    </li>
+                </ul>
+                <ul class="list-inline m-t-15">
+                    <li style="width: 40%">
+                        <h4 class="text-muted m-t-25">Volume</h4>
+                        <h4 class="m-b-0" id="volume"></h4>
+                    </li>
+                    <li style="width: 40%">
+                        <h4 class="text-muted m-t-25">P/E Ratio</h4>
+                        <h4 class="m-b-0" id="peratio"></h4>
                     </li>
                 </ul>
             </div>
@@ -178,7 +200,6 @@ $(document).ready(function(){
                 dataType: "json",
                 url: 'updateinfo/',
                 success: function (data) {
-                    console.log(data);
                     for(var i=0; i<=10; i++){
                         $('#time'+i).text(data[i].log_time);
                         $('#info'+i).text(data[i].log_info.info);
@@ -191,8 +212,32 @@ $(document).ready(function(){
         var interval = setInterval(call_counter,500);
         call_counter();
     }
+    function getMarketData(){
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22{{ task.symbol }}%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys",
+            success: function(data) {
+                var quote = data.query.results.quote;
+                console.log(quote);
+                $("#comp-name").text(quote.Name);
+                $("#open").text("$"+quote.Open);
+                $("#close").text("$"+quote.PreviousClose);
+                $("#now").text("$"+quote.LastTradePriceOnly);
+                $("#change").text(quote.Change + " | " + quote.ChangeinPercent);
+                $("#dayshigh").text(quote.DaysHigh);
+                $("#dayslow").text(quote.DaysLow);
+                $("#yearshigh").text(quote.YearHigh);
+                $("#yearslow").text(quote.YearLow);
+                $("#volume").text(quote.Volume);
+                $("#peratio").text(quote.PERatio);
+
+            }
+        });
+    }
+    getMarketData();
     $("#updatelog").click(refresh);
-})
+});
 
 </script>
 {% endblock %}
