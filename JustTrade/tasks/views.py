@@ -12,8 +12,8 @@ import json
 # Page 2 View Controller
 def trade(request, pk):
 	task = get_object_or_404(tradingTask, pk=pk)
-	subprocess.Popen(['python', 'manage.py', 'runscript', 'main', '--script-args=1'])
-
+	if task.is_active:
+		subprocess.Popen(['python', 'manage.py', 'runscript', 'main', '--script-args=1'])
 	return render(request, 'detail.html', {'task': task})
 
 
@@ -28,7 +28,7 @@ def backtest(request, pk):
 # Page 3 View Controller
 def present_trading(request, pk):
 	task = get_object_or_404(tradingTask, pk=pk)
-	logs = tradeLog.objects.filter(trade_task=task).reverse()[0:10]
+	logs = tradeLog.objects.filter(trade_task=task)[0:11]
 	json_return = []
 
 	for log in logs:
@@ -44,8 +44,6 @@ def present_trading(request, pk):
 # backtest view
 def backtest_view(request, pk):
 	task = get_object_or_404(tradingTask, pk=pk)
-	subprocess.Popen(['python', 'manage.py', 'runscript', 'main', '--script-args=1'])
-
 	return render(request, 'backtest.html', {'task': task})
 
 # all tasks listed in index page
