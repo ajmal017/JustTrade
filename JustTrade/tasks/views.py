@@ -3,12 +3,12 @@ from .models import tradingTask,tradeLog
 from scripts import main
 import subprocess
 from django.http import HttpResponse
+from multiprocessing import Pool
 
 
 # Page 2 View Controller
 def trade(request,pk):
     task = get_object_or_404(tradingTask,pk=pk)
-
     subprocess.Popen(['python', 'manage.py', 'runscript', 'main','--script-args=1'])
 
     return render(request, 'detail.html', {'task': task})
@@ -25,6 +25,7 @@ def present_trading(request, pk):
                              'trade_task': log.trade_task,
                              'log_type': log.log_type,
                              'log_info': log.log_info})
+
 
     return HttpResponse(json_return, content_type='application/json')
 

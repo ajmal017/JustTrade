@@ -8,13 +8,19 @@
 {% block content %}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
-            function call_counter(url) {
+            
+            $(function refresh(){
+            function call_counter() {
                 
                 $.get('updateinfo/', function (data) {
                     $("#show_strategy").text(data.logs)
                     alert(data.logs );
+
                 });
             }
+            var interval = setInterval(call_counter,5000);
+            call_counter();
+        });
 </script>
 <div class="row">
     <div class="col-lg-8">
@@ -89,7 +95,7 @@
                         <th>Due Date</th>
                         <th>Status</th>
                         <th>Assign</th>
-                        
+
                         <div id = 'show_strategy'> </div>
                     </tr>
                     </thead>
@@ -122,7 +128,7 @@
                     <small class="text-warning"><b>fdsf</b></small>
             </div>
         </div>
-        <button onclick="call_counter('http://www.google.com');">
+        <button onclick="refresh();">
             I update object 12345
         </button>
 
