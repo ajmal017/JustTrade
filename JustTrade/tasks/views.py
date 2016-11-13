@@ -16,19 +16,19 @@ def trade(request, pk):
 		subprocess.Popen(['python', 'manage.py', 'runscript', 'main', '--script-args=1'])
 	return render(request, 'detail.html', {'task': task})
 
-
-def backtest(request, pk):
-	task = get_object_or_404(tradingTask, pk=pk)
-	result = main.Execute(pk, realtimeindex=False)
-	subset = result[['datetime', 'equity_curve', 'total']]
-	tuples = [tuple(x) for x in subset.values]
-	return render(request, '', {'task': task, 'tuples': tuples})
+# for NLP Trading
+def IBM_trade(request,pk):
+	task = get_object_or_404(tradingTask,pk=pk)
+	symbol_to_name = {'GOOG':'Google','APPL':Apple,"TSLA":Tesla,"BABA":"Alibaba"}
+	name = symbol_to_name[task.symbol] 
+	result = main.Execute(pk,realtimeindex = False,symbol_list = [name])
+	return render(request,'',{"task":task,"result":result})
 
 
 # Page 3 View Controller
 def present_trading(request, pk):
 	task = get_object_or_404(tradingTask, pk=pk)
-	logs = tradeLog.objects.filter(trade_task=task)[0:11]
+	logs = tradeLog.objects.filter(trade_task=task).order_by('-log_time')[0:10]
 	json_return = []
 
 	for log in logs:
@@ -43,11 +43,8 @@ def present_trading(request, pk):
 
 # backtest view
 def backtest_view(request, pk):
-	task = get_object_or_404(tradingTask, pk=pk)
-	return render(request, 'backtest.html', {'task': task})
-
-# all tasks listed in index page
-# def show_tasks(request):
-#     tasks = tradingTask.objects.all()
-#
-#     return render(request, 'index.html', {'tasks': tasks})
+    task = get_object_or_404(tradingTask,pk=pk)
+    result = main.Execute(pk,realtimeindex = False)
+    subset = result[['datetime', 'equity_curve', 'total']]
+    tuples = [tuple(x) for x in subset.values]
+    return render(request,'backtest.html',{'task':task,'tuples':tuples})

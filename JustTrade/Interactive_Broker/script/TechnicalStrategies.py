@@ -107,6 +107,93 @@ class Market_Information_Prediction(Strategy):
             bought[s] =  False
         return bought
 
+    
+    def searchNews(self,text):
+        #4e9a752f7bc8c85ee8a88f441b7ddb24db2c39c0 #a4fee8f87cfbfe973fa8cfd3454e91d6f5cd8e8c #63af3e40799acb3b2819f59130b03db239a8767a #16bc58b14b5ee52a14d817475173f347333f5a0e #4e1cb9a6ee6aa63df294081a617e4badcc9b5d33
+        alchemy_data_news = AlchemyDataNewsV1(api_key='4e1cb9a6ee6aa63df294081a617e4badcc9b5d33')
+        '''
+        results = alchemy_data_news.get_news_documents(start='now-1h', end='now', time_slice='1h')
+        print(json.dumps(results, indent=2))
+        '''
+        results = alchemy_data_news.get_news_documents(
+            start='1453334400',
+            end='1455444500',
+            max_results=10,
+            return_fields=['enriched.url.title',
+                           'enriched.url.url',
+                           'enriched.url.author',
+                           'enriched.url.publicationDate'],
+            query_fields={'q.enriched.url.enrichedTitle.entities.entity': '|text={},type=company|'.format(text)})
+        #print(json.dumps(results))
+        temp=json.dumps(results)
+        dict=ast.literal_eval(temp)
+        res=dict['result']['docs']
+        #print(res)
+        infolist=[]
+        for i in range(0,len(res)):
+            info={}
+            link=res[i]['source']['enriched']['url']['url']
+            title=res[i]['source']['enriched']['url']['title']
+            info['title']=title
+            info['url']=link
+            infolist.append(info)
+        print(infolist)
+        print('AlchemyData finish')
+        return infolist
+
+    def emotion(self,url):
+
+        alchemy_language = AlchemyLanguageV1(api_key='4e1cb9a6ee6aa63df294081a617e4badcc9b5d33')
+        temp=json.dumps(alchemy_language.emotion(url=url))
+        #print(temp)
+        #print(type(temp))
+        dict=ast.literal_eval(temp)
+       #print(dict)
+        #print(type(dict))
+        emotion=dict['docEmotions']
+        #print(emotion)
+        #print(type(emotion))
+        positive=float(emotion['joy'])
+        print(positive)
+        negative=float(emotion['anger'])+float(emotion['fear'])+float(emotion['disgust'])+float(emotion['sadness'])
+        print(negative)
+        if positive > negative:
+            return 1
+        else:
+            return 0
+
+
+    def AlchemyAnalysis(self,text):
+            infolist=self.searchNews(text)
+
+            urllist=[]
+            for i in range(0,len(infolist)):
+                url=infolist[i]['url']
+                print(url)
+                urllist.append(url)
+            posnum = 0 # the number of the positive website
+            totalnum = len(urllist)
+            print('total number of websites:',totalnum)
+            for j in range(0,totalnum):
+                posnum += self.emotion(urllist[j])
+                print('Loop:',j)
+                #time.sleep(4000)
+            percent=posnum/totalnum
+            print(percent)
+            if percent > 0.9:
+                return SignalEvent(0,0,'LONG',"strong")
+            elif percent > 0.8:
+                return SignalEvent(0,0,'LONG',"mild")
+            elif percent > 0.7:
+                return SignalEvent(0,0,'LONG',"weak")
+            elif percent < 0.1:
+                return SignalEvent(0,0,'SHORT',"strong")
+            elif percent < 0.2:
+                return SignalEvent(0,0,'SHORT',"mild")
+            elif percent < 0.3:
+                return SignalEvent(0,0,'SHORT',"weak")
+
+
     def calculate_signals(self,event):
         if event.type == "MARKET":
             return 1

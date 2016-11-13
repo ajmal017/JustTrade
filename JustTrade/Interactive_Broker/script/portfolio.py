@@ -199,6 +199,7 @@ class NaivePortfolio(Portfolio):
             self.update_holdings_from_fill(event)
         
         
+        
     def generate_naive_order(self, signal):
         """
             Simply transacts an OrderEvent object as a constant quantity
