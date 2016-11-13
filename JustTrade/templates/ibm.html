@@ -106,7 +106,7 @@
                     {% for url in urls %}
                         <tr>
                             <td>{{ for.count }}</td>
-                            <td>{{ url }}</td>
+                            <td><a href = {{url.url}}>{{ url.title }}</a></td>
                             <td>{{ result }}</td>
                             <td></td>
                         </tr>

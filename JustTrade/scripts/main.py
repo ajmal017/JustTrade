@@ -235,4 +235,4 @@ def Execute(pk,realtimeindex=True,NPL =False, waiting_time = 0.1,symbol_list=["S
 
 
 def run(pk):
-	Execute(pk,realtimeindex = False,NPL = True)
+	Execute(pk,realtimeindex = False)

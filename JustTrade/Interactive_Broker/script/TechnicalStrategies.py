@@ -4,6 +4,7 @@ import json
 import ast
 from watson_developer_cloud import AlchemyLanguageV1,AlchemyDataNewsV1
 import numpy as np
+import random
 
 class RSI(Strategy):
     """
@@ -183,6 +184,7 @@ class Market_Information_Prediction(Strategy):
             #     #time.sleep(4000)
             # percent=posnum/totalnum
             # print(percent)
+            percent = random.random()
             if percent > 0.9:
                 return infolist,['LONG',"strong"]
             elif percent > 0.8:
