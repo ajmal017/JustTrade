@@ -10,6 +10,9 @@
     {% endif %}
 {% endblock %}
 
+{% block css %}
+
+{% endblock %}
 {% block content %}
 
 <div class="row">
@@ -220,9 +223,12 @@
 {% endblock %}
 
 {% block js %}
+    <!-- Notification js -->
+<script src="{% get_static_prefix %}/plugins/notifyjs/dist/notify.min.js"></script>
+<script src="{% get_static_prefix %}/plugins/notifications/notify-metro.js"></script>
 <script>
 $(document).ready(function(){
-    {% if task.is_active %}
+
     function refresh(){
         function getLog(){
             $.ajax({
@@ -234,34 +240,20 @@ $(document).ready(function(){
                         $('#time'+i).text(data[i].log_time);
                         $('#info'+i).text(data[i].log_info.info);
                         $('#type'+i).replaceWith("<td id=\"type"+i+"\"><span class=\"label label-info\">" + data[i].log_type + "<\/span><\/td>");
-
                     }
+                            {% if task.is_active %}
+                   $.Notification.autoHideNotify('success', 'bottom left', 'New log updated','');
+                     {% endif %}
                 }
             });
         }
-        var interval = setInterval(getLog,500);
+        {% if task.is_active %}
+        var interval = setInterval(getLog,5000);
+        {% endif %}
         getLog();
     }
     refresh();
-    {% else %}
-        function getLog(){
-            $.ajax({
-                type: "GET",
-                dataType: "json",
-                url: 'updateinfo/',
-                success: function (data) {
-                    for(var i=0; i<=10; i++){
-                        $('#time'+i).text(data[i].log_time);
-                        $('#info'+i).text(data[i].log_info.info);
-                        $('#type'+i).replaceWith("<td id=\"type"+i+"\"><span class=\"label label-info\">" + data[i].log_type + "<\/span><\/td>");
 
-                    }
-                }
-            });
-        }
-                getLog();
-
-    {% endif %}
     function getMarketData(){
         $.ajax({
             type: "GET",

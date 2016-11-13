@@ -58,7 +58,7 @@ def task_log_api(request, pk):
 def task_quotes_api(request, pk):
 	task = get_object_or_404(tradingTask, pk=pk)
 	# symbol, time interval in seconds, day
-	data = quote.Quote(task.symbol.name, 300, 1).to_json()
+	data = quote.Quote(task.symbol.name, 30, 1).to_json()
 	# sp500 = quote.GoogleIntradayQuote('IXIC', 300, 1)
 	return HttpResponse(data, content_type='application/json')
 
