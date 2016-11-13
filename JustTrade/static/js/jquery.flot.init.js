@@ -106,6 +106,4 @@ function($) {
 	$.FlotChart.init()
 }(window.jQuery);
 
-$(document).ready(function() {
 
-});

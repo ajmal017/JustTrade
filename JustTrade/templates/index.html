@@ -2,156 +2,154 @@
 {% load static %}
 
 {% block title %}
-Welcome!
+    Welcome!
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-8">
-    <div class="card-box">
-            <h4 class="text-dark header-title m-t-0 m-b-30">Market Indices</h4>
-            <div class="widget-chart text-center">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card-box">
+                <h4 class="text-dark header-title m-t-0 m-b-30">Market Indices</h4>
+                <div class="widget-chart text-center">
 
-            <div class="portlet-heading">
+                    <div class="portlet-heading">
 
-                <div class="clearfix"></div>
-            </div>
-            <div id="portlet5" class="panel-collapse collapse in">
-                <div class="portlet-body">
-                    <div id="combine-chart">
-                        <div id="combine-chart-container" class="flot-chart" style="height: 320px;">
+                        <div class="clearfix"></div>
+                    </div>
+                    <div id="portlet5" class="panel-collapse collapse in">
+                        <div class="portlet-body">
+                            <div id="combine-chart">
+                                <div id="combine-chart-container" class="flot-chart" style="height: 320px;">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-    </div>
-</div>
         </div>
 
-    <div class="col-lg-4">
-        <div class="card-box">
-            <h4 class="text-dark header-title m-t-0 m-b-30">Market Info</h4>
-            <div class="widget-chart text-center">
-                <ul class="list-inline m-t-15">
-                    <li>
-                        <h4 class="m-b-0">Nasdaq</h4>
-                        <h3 class="m-b-0" id="nasdaq-last-price"></h3>
+        <div class="col-lg-4">
+            <div class="card-box">
+                <h4 class="text-dark header-title m-t-0 m-b-30">Market Info</h4>
+                <div class="widget-chart text-center">
+                    <ul class="list-inline m-t-15">
+                        <li>
+                            <h4 class="m-b-0">Nasdaq</h4>
+                            <h3 class="m-b-0" id="nasdaq-last-price"></h3>
 
-                    </li>
-                    <li>
-                        <h4 class=" m-t-0" id="nasdaq-percent"></h4>
-                    </li>
-                    <li>
-                        <h4 class=" m-t-0" id="nasdaq-change"></h4>
-                    </li>
-                </ul>
-                <ul class="list-inline m-t-15">
-                    <li>
-                        <h4 class="m-b-0">S&P 500</h4>
-                        <h3 class="m-b-0" id="sp500-last-price"></h3>
+                        </li>
+                        <li>
+                            <h4 class=" m-t-0" id="nasdaq-percent"></h4>
+                        </li>
+                        <li>
+                            <h4 class=" m-t-0" id="nasdaq-change"></h4>
+                        </li>
+                    </ul>
+                    <ul class="list-inline m-t-15">
+                        <li>
+                            <h4 class="m-b-0">S&P 500</h4>
+                            <h3 class="m-b-0" id="sp500-last-price"></h3>
 
-                    </li>
-                    <li>
-                        <h4 class=" m-t-0" id="sp500-percent"></h4>
+                        </li>
+                        <li>
+                            <h4 class=" m-t-0" id="sp500-percent"></h4>
 
-                    </li>
-                    <li>
-                        <h4 class=" m-t-0" id="sp500-change"></h4>
-                    </li>
-                </ul>
-                <ul class="list-inline m-t-15">
-                    <li>
-                        <h4 class="m-b-0">DJIA</h4>
-                        <h3 class="m-b-0 text-success">18847.66</h3>
+                        </li>
+                        <li>
+                            <h4 class=" m-t-0" id="sp500-change"></h4>
+                        </li>
+                    </ul>
+                    <ul class="list-inline m-t-15">
+                        <li>
+                            <h4 class="m-b-0">DJIA</h4>
+                            <h3 class="m-b-0 text-success">18847.66</h3>
 
-                    </li>
+                        </li>
 
-                    <li>
-                        <h4 class="m-t-0 text-success">+0.21%</h4>
+                        <li>
+                            <h4 class="m-t-0 text-success">+0.21%</h4>
 
-                    </li>
-                    <li>
-                        <h4 class="m-t-0 text-success">+39.78</h4>
-                    </li>
-                </ul>
+                        </li>
+                        <li>
+                            <h4 class="m-t-0 text-success">+39.78</h4>
+                        </li>
+                    </ul>
+                </div>
             </div>
+
         </div>
 
     </div>
+    <!-- end row -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card-box">
+                <h4 class="text-dark  header-title m-t-0">My Strategies</h4>
 
-</div>
-<!-- end row -->
-
-<div class="row">
-    <div class="col-lg-8">
-        <div class="card-box">
-            <h4 class="text-dark  header-title m-t-0">My Strategies</h4>
-
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Task Symbol</th>
-                        <th>Task Strategy</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Status</th>
-                        <th>Back Test</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for task in tasks %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
                         <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td><a href="/task/trade/{{ task.pk }}/">{{task.symbol}}</a></td>
-                            <td>{{task.strategy}}</td>
-                            <td>01/01/2016</td>
-                            <td>26/04/2016</td>
-                            {% if task.is_active %}
-                            <td><span class="label label-success">Active</span></td>
-                            {% else %}
-                            <td><span class="label label-danger">Stopped</span></td>
-                            {% endif %}
-                            <td><a href="/task/trade/{{ task.pk }}/backtest/">Back test</a> </td>
+                            <th>#</th>
+                            <th>Task Symbol</th>
+                            <th>Task Strategy</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th>Back Test</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for task in tasks %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><a href="/task/trade/{{ task.pk }}/">{{ task.symbol }}</a></td>
+                                <td>{{ task.strategy }}</td>
+                                <td>01/01/2016</td>
+                                <td>26/04/2016</td>
+                                {% if task.is_active %}
+                                    <td><span class="label label-success">Active</span></td>
+                                {% else %}
+                                    <td><span class="label label-danger">Stopped</span></td>
+                                {% endif %}
+                                <td><a href="/task/trade/{{ task.pk }}/backtest/">Back test</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- end col -8 -->
+        <!-- end col -8 -->
 
-    <div class="col-lg-4">
-        <div class="card-box">
-            <h4 class="text-dark header-title m-t-0 m-b-30">My Shares</h4>
+        <div class="col-lg-4">
+            <div class="card-box">
+                <h4 class="text-dark header-title m-t-0 m-b-30">My Shares</h4>
 
-            <div class="widget-chart text-center">
-                <div id="sparkline3"></div>
-                <ul class="list-inline m-t-15">
-                    <li>
-                        <h5 class="text-muted m-t-20">Total</h5>
-                        <h4 class="m-b-0">$5523</h4>
-                    </li>
-                    <li>
-                        <h5 class="text-muted m-t-20">Last week</h5>
-                        <h4 class="m-b-0">$523</h4>
-                    </li>
-                    <li>
-                        <h5 class="text-muted m-t-20">Last Month</h5>
-                        <h4 class="m-b-0">$965</h4>
-                    </li>
-                </ul>
+                <div class="widget-chart text-center">
+                    <div id="sparkline3"></div>
+                    <ul class="list-inline m-t-15">
+                        <li>
+                            <h5 class="text-muted m-t-20">Total</h5>
+                            <h4 class="m-b-0">$5523</h4>
+                        </li>
+                        <li>
+                            <h5 class="text-muted m-t-20">Last week</h5>
+                            <h4 class="m-b-0">$523</h4>
+                        </li>
+                        <li>
+                            <h5 class="text-muted m-t-20">Last Month</h5>
+                            <h4 class="m-b-0">$965</h4>
+                        </li>
+                    </ul>
+                </div>
             </div>
+
+
         </div>
 
-
     </div>
-
-</div>
-
-<!-- end row -->
+    <!-- end row -->
 {% endblock %}
 
 {% block js %}
@@ -163,46 +161,139 @@ Welcome!
     <script src="{% get_static_prefix %}/plugins/flot-chart/jquery.flot.selection.js"></script>
     <script src="{% get_static_prefix %}/plugins/flot-chart/jquery.flot.stack.js"></script>
     <script src="{% get_static_prefix %}/plugins/flot-chart/jquery.flot.crosshair.js"></script>
-    <script src="{% get_static_prefix %}/js/jquery.flot.init.js"></script>
 
     <script>
-    $(document).ready(function() {
+        $(document).ready(function () {
 
-        function getMarketData(id) {
-            var symbol;
-            if(id==="nasdaq"){
-                symbol="^IXIC";
-            } else {
-                symbol="^GSPC";
-            }
-            $.ajax({
-                type: "GET",
-                dataType: "json",
-                url: "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22"+symbol+"%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys",
-                success: function (data) {
-                    var quote = data.query.results.quote;
-                    console.log(quote);
-                    $("#"+id+"-last-price").text(quote.LastTradePriceOnly);
-                    $("#"+id+"-percent").text(quote.ChangeinPercent);
-                    $("#"+id+"-change").text(quote.Change);
-
-                    if(quote.Change > 0){
-                        $("#"+id+"-last-price").addClass("text-success");
-                        $("#"+id+"-percent").addClass("text-success");
-                        $("#"+id+"-change").addClass("text-success");
-                    } else {
-                        $("#"+id+"-last-price").addClass("text-danger");
-                        $("#"+id+"-percent").addClass("text-danger");
-                        $("#"+id+"-change").addClass("text-danger");
-                    }
-
+            function getMarketData(id) {
+                var symbol;
+                if (id === "nasdaq") {
+                    symbol = "^IXIC";
+                } else {
+                    symbol = "^GSPC";
                 }
-            });
-        }
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22" + symbol + "%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys",
+                    success: function (data) {
+                        var quote = data.query.results.quote;
+                        $("#" + id + "-last-price").text(quote.LastTradePriceOnly);
+                        $("#" + id + "-percent").text(quote.ChangeinPercent);
+                        $("#" + id + "-change").text(quote.Change);
 
-        getMarketData("nasdaq");
-        getMarketData("sp500");
+                        if (quote.Change > 0) {
+                            $("#" + id + "-last-price").addClass("text-success");
+                            $("#" + id + "-percent").addClass("text-success");
+                            $("#" + id + "-change").addClass("text-success");
+                        } else {
+                            $("#" + id + "-last-price").addClass("text-danger");
+                            $("#" + id + "-percent").addClass("text-danger");
+                            $("#" + id + "-change").addClass("text-danger");
+                        }
 
-    });
+                    }
+                });
+            }
+
+            getMarketData("nasdaq");
+            getMarketData("sp500");
+        });
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: "quotes/",
+                    success: function (data) {
+                        var FlotChart = function () {
+                            this.$body = $("body");
+                        };
+                        //creates Combine Chart
+                        FlotChart.prototype.createCombineGraph = function (selector, ticks, labels, datas) {
+                            var data = [{
+                                label: labels[0],
+                                data: datas[0],
+                                lines: {
+                                    show: true
+                                }
+                            },
+                                {
+                                    label: labels[1],
+                                    data: datas[1],
+                                    lines: {
+                                        show: true
+                                    }
+                                },
+                                {
+                                    label: labels[2],
+                                    data: datas[2],
+                                    lines: {
+                                        show: true
+                                    }
+                                }];
+                            var options = {
+                                series: {
+                                    shadowSize: 0
+                                },
+                                grid: {
+                                    hoverable: true,
+                                    clickable: true,
+                                    tickColor: "#98a6ad",
+                                    borderWidth: 1,
+                                    borderColor: "#58666e"
+                                },
+                                colors: ["#3bafda", "#f76397", "#00b19d"],
+                                tooltip: true,
+                                tooltipOpts: {
+                                    defaultTheme: false
+                                },
+                                legend: {
+                                    position: "ne",
+                                    margin: [0, -24],
+                                    noColumns: 0,
+                                    labelBoxBorderColor: null,
+                                    labelFormatter: function (label, series) {
+                                        // just add some space to labes
+                                        return '' + label + '&nbsp;&nbsp;';
+                                    },
+                                    width: 30,
+                                    height: 2
+                                },
+                                yaxis: {
+                                    tickColor: 'rgba(0,0,0,0.1)', //'#98a6ad',
+                                    font: {
+                                        color: '#bdbdbd'
+                                    }
+                                },
+                                xaxis: {
+                                    ticks: ticks,
+                                    tickColor: 'rgba(0,0,0,0.1)', //'#98a6ad',
+                                    font: {
+                                        color: '#bdbdbd'
+                                    }
+                                }
+                            };
+
+                            $.plot($(selector), data, options);
+                        },
+
+                            //initializing various charts and components
+                                FlotChart.prototype.init = function () {
+                                    var Nasdaq = data;
+{#                                    var DJIA = [[0, 311], [1, 630], [2, 447], [3, 371], [4, 267], [5, 205], [6, 310], [7, 360], [8, 430], [9, 610], [10, 262], [11, 324], [12, 474], [13, 559], [14, 668], [15, 392], [16, 489], [17, 539], [18, 628], [19, 580], [20, 440], [21, 355], [22, 468], [23, 184]];#}
+{#                                    var SP500 = [[23, 727], [22, 128], [21, 110], [20, 92], [19, 172], [18, 63], [17, 150], [16, 592], [15, 12], [14, 246], [13, 52], [12, 149], [11, 123], [10, 2], [9, 325], [8, 10], [7, 15], [6, 89], [5, 65], [4, 77], [3, 600], [2, 200], [1, 385], [0, 200]];#}
+                                    var ticks = [[0, "9:30"], [1, ""], [2, "10:00"], [3, ""], [4, "10:30"], [5, ""], [6, "11:00"], [7, ""], [8, "11:30"], [9, ""], [10, "12:00"], [11, ""], [12, "12:30"], [13, ""], [14, "13:00"], [15, ""], [16, "13:30"], [17, ""], [18, "14:00"], [19, ""], [20, "14:30"], [21, ""], [22, "15:00"], [23, ""], [24, "15:30"], [25, ""], [26, "16:00"]];
+                                    var combinelabels = ["Nasdaq", "DJIA", "S&P 500"];
+                                    var combinedatas = [Nasdaq];
+                                    this.createCombineGraph("#combine-chart #combine-chart-container", ticks, combinelabels, combinedatas);
+                                    //Combine graph data
+                                },
+                            //init flotchart
+                                $.FlotChart = new FlotChart, $.FlotChart.Constructor = FlotChart;
+
+
+                        $.FlotChart.init();
+
+                    }});
     </script>
 {% endblock %}

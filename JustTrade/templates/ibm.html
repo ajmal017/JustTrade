@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ task.strategy.name }} - {{ task.symbol.name }} &nbsp;
+    {% if task.is_active %}
+    <span class="label label-success">Strategy Active</span>
+    {% else %}
+    <span class="label label-danger">Strategy On Hold</span>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-9">
+        <div class="card-box">
+            <h4 class="text-dark  header-title m-t-0 m-b-30" id="comp-name"></h4>
+
+            <div class="widget-chart text-center" >
+                <div id="sparkline1"></div>
+
+                <ul class="list-inline m-t-10">
+                    <li style="width: 20%">
+                        <h4 class="text-muted m-t-25">Now</h4>
+                        <h3 class="m-b-0 text-danger" id="now"></h3>
+                    </li>
+                    <li style="width: 20%">
+                        <h4 class="text-muted m-t-25">Change</h4>
+                        <h3 class="m-b-0 text-danger" id="change"></h3>
+                    </li>
+                    <li style="width: 20%">
+                        <h4 class="text-muted m-t-25">Previous Close</h4>
+                        <h4 class="m-b-0" id="close"></h4>
+                    </li>
+                    <li style="width: 20%">
+                        <h4 class="text-muted m-t-25">Open</h4>
+                        <h4 class="m-b-0" id="open"></h4>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-3">
+        <div class="card-box">
+            <h4 class="text-dark header-title m-t-0 m-b-30">Market info</h4>
+
+            <div class="widget-chart text-center">
+                <ul class="list-inline m-t-15">
+                    <li style="width: 40%">
+                        <h4 class="text-muted m-t-25">Day's High</h4>
+                        <h4 class="m-b-0" id="dayshigh"></h4>
+                    </li>
+                    <li style="width: 40%">
+                        <h4 class="text-muted m-t-25">Day's Low</h4>
+                        <h4 class="m-b-0" id="dayslow"></h4>
+                    </li>
+
+                </ul>
+                <ul class="list-inline m-t-15">
+                    <li style="width: 40%">
+                        <h4 class="text-muted m-t-25">Year's High</h4>
+                        <h4 class="m-b-0" id="yearshigh"></h4>
+                    </li>
+                    <li style="width: 40%">
+                        <h4 class="text-muted m-t-25">Year's Low</h4>
+                        <h4 class="m-b-0" id="yearslow"></h4>
+                    </li>
+                </ul>
+                <ul class="list-inline m-t-15">
+                    <li style="width: 40%">
+                        <h4 class="text-muted m-t-25">Volume</h4>
+                        <h4 class="m-b-0" id="volume"></h4>
+                    </li>
+                    <li style="width: 40%">
+                        <h4 class="text-muted m-t-25">P/E Ratio</h4>
+                        <h4 class="m-b-0" id="peratio"></h4>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!-- end row -->
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card-box">
+            <h4 class="text-dark  header-title m-t-0">Log goes here</h4>
+            <div class="table-responsive">
+                <table class="table" id="vuetable">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>URL</th>
+                        <th>Result</th>
+                        <th>Log time</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for url in urls %}
+                        <tr>
+                            <td>{{ for.count }}</td>
+                            <td>{{ url }}</td>
+                            <td>{{ result }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <ul class="pagination text-center">
+                                            <li class="disabled">
+                                                <a href="#"><i class="fa fa-angle-left"></i></a>
+                                            </li>
+                                            <li class="active">
+                                                <a href="#">1</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">2</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">3</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">4</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">5</a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fa fa-angle-right"></i></a>
+                                            </li>
+                                        </ul>
+            </div>
+        </div>
+    </div>
+    <!-- end col -8 -->
+
+    <div class="col-lg-4">
+        <div class="card-box widget-user">
+                {% if not task.is_active %}
+                    <a type="button" href="switch/" class="pull-right btn btn-success btn-sm waves-effect w-md waves-light m-b-5">Start Strategy</a>
+                {% else %}
+                    <a type="button" href="switch/" class="pull-right btn btn-danger btn-sm waves-effect w-md waves-light m-b-5">Stop Strategy</a>
+                {% endif %}
+            <h4 class="m-t-0 m-b-5">Strategy Description</h4>
+
+            <p class="text-muted m-b-5 font-13">{{ task.strategy.introduction }}</p>
+        </div>
+{#        <button id="updatelog">#}
+{#            I update object 12345#}
+{#        </button>#}
+
+    </div>
+
+</div>
+
+<!-- end row -->
+
+{% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function(){
+    function getMarketData(){
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22{{ task.symbol }}%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys",
+            success: function(data) {
+                var quote = data.query.results.quote;
+                console.log(quote);
+                $("#comp-name").text(quote.Name);
+                $("#open").text("$"+quote.Open);
+                $("#close").text("$"+quote.PreviousClose);
+                $("#now").text("$"+quote.LastTradePriceOnly);
+                $("#change").text(quote.Change + " | " + quote.ChangeinPercent);
+                $("#dayshigh").text(quote.DaysHigh);
+                $("#dayslow").text(quote.DaysLow);
+                $("#yearshigh").text(quote.YearHigh);
+                $("#yearslow").text(quote.YearLow);
+                $("#volume").text(quote.Volume);
+                $("#peratio").text(quote.PERatio);
+
+            }
+        });
+    }
+    getMarketData();
+});
+
+</script>
+{% endblock %}
+

@@ -21,25 +21,25 @@ class Quote(object):
 		self.close.append(float(close))
 		self.volume.append(int(volume))
 
-	def to_json(self):
-		json_return = []
-
-		json_return.append(["'symbol':{0}, 'date':{1}, 'time':{2}, 'open':{3:.2f}, 'close':{4:.2f}, 'high':{5:.2f}, 'low':{6:.2f}, 'volume':{7}".format(self.symbol,
-		                                                                           self.date[bar].strftime('%Y-%m-%d'),
-		                                                                           self.time[bar].strftime('%H:%M:%S'),
-		                                                                           self.open_[bar], self.close[bar],
-		                                                                           self.low[bar], self.high[bar],
-		                                                                           self.volume[bar])
-		                for bar in xrange(len(self.close))])
-
-		# json_return.append({'log_time': log.log_time.strftime("%Y-%m-%d %H:%M:%S"),
-		#                     'trade_task': log.trade_task.pk,
-		#                     'log_type': log.log_type,
-		#                     'log_info': json.loads(log.log_info)})
-		# for log in xrange(len(self.close))])
-
-		json_return = json.dumps(json_return)
-		return json_return
+def to_json(self):
+	json_return = []
+	#  how i calculate the index:
+	# (time - (9*3600+30*60))/ (16*3600 - (9*3600/+30*60)) * 27
+	# 27*(time-34200)/23400
+	for bar in xrange(len(self.close)):
+		(h, m, s) = self.time[bar].strftime('%H:%M:%S').split(':')
+		index_time = int(h) * 3600 + int(m) * 60 + int(s)
+		json_return.append(
+				{'symbol': self.symbol,
+				 'date': self.date[bar].strftime('%Y-%m-%d'),
+				 'time': self.time[bar].strftime('%H:%M:%S'),
+				 'open': self.open_[bar],
+				 'close': self.close[bar],
+				 'volume': self.volume[bar],
+				 'index': 27 * (index_time - 34200) / 23400
+				 })
+	json_return = json.dumps(json_return)
+	return json_return
 
 	def to_csv(self):
 		return ''.join(["{0},{1},{2},{3:.2f},{4:.2f},{5:.2f},{6:.2f},{7}\n".format(self.symbol,

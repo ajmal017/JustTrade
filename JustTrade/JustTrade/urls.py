@@ -21,7 +21,8 @@ import views
 urlpatterns = [
     url(r'^$', views.landing_view),
     url(r'^index/$', views.index_view),
- 
+    url(r'^index/quotes/$', views.index_quote_api),
+
     url(r'^admin/', admin.site.urls),
     url(r'^task/', include(task_urls)),
  

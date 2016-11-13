@@ -36,7 +36,7 @@ def IBM_trade_view(request, pk):
 	symbol_to_name = {'GOOG': 'Google', 'APPL': 'Apple', "TSLA": 'Tesla', 'BABA': 'Alibaba'}
 	name = symbol_to_name[task.symbol.name]
 	urls, result = main.Execute(pk, realtimeindex=False, NPL=True, symbol_list=[name])
-	return render(request, '', {"task": task, "urls": urls, "result": result})
+	return render(request, 'ibm.html', {"task": task, "urls": urls, "result": result})
 
 
 # Page 3 View Controller
