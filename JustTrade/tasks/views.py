@@ -7,7 +7,7 @@ from multiprocessing import Pool
 from scripts import main
 
 # Page 2 View Controller
-def trade(request,pk):
+def trade(request, pk):
     task = get_object_or_404(tradingTask,pk=pk)
     subprocess.Popen(['python', 'manage.py', 'runscript', 'main','--script-args=1'])
 
@@ -31,14 +31,20 @@ def present_trading(request, pk):
     json_return = []
 
     for log in logs:
-        json_return.append({'trade_time': log.trade_time,
-                             'trade_task': log.trade_task,
+        json_return.append({'trade_time': log.log_time.strftime("%Y-%m-%d %H:%M:%S"),
+                             'trade_task': log.trade_task.pk,
                              'log_type': log.log_type,
                              'log_info': log.log_info})
 
-
     return HttpResponse(json_return, content_type='application/json')
 
+
+# backtest view
+def backtest_view(request, pk):
+    task = get_object_or_404(tradingTask,pk=pk)
+    subprocess.Popen(['python', 'manage.py', 'runscript', 'main', '--script-args=1'])
+
+    return render(request, 'backtest.html', {'task': task})
 
 # all tasks listed in index page
 # def show_tasks(request):

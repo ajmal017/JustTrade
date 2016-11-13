@@ -6,7 +6,6 @@
 {% endblock %}
 
 {% block content %}
-
 <div class="row">
     <div class="col-lg-8">
         <div class="card-box">
@@ -113,32 +112,8 @@
 
 </div>
 
-<!-- end row -->
-
 {% endblock %}
 
 {% block js %}
-    <script src="{% get_static_prefix %}plugins/vue/vue.min.js"></script>
-    <script>
-    var example1 = new Vue({
-      el: '#example-1',
-      data: {
-        items: [
-          { message: 'Foo' },
-          { message: 'Bar' }
-        ]
-      }
-    });
 
-   $(function refresh(){
-        function call_counter(){
-            $.get('updateinfo/', function (data) {
-                $("#show_strategy").text(data.logs);
-                alert(data.logs);
-            });
-        }
-        var interval = setInterval(call_counter,5000);
-        call_counter();
-        });
-    </script>
 {% endblock %}

@@ -7,7 +7,7 @@ from .models import tradingTask, tradeLog
 
 class tradeLogAdmin(admin.ModelAdmin):
 	list_display = ['trade_task', 'log_type', 'log_info']
-	readonly_fields = ('trade_time',)
+	readonly_fields = ('log_time',)
 
 admin.site.register(tradingTask)
 admin.site.register(tradeLog, tradeLogAdmin)
