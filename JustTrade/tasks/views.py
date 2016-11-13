@@ -28,7 +28,7 @@ def IBM_trade(request,pk):
 # Page 3 View Controller
 def present_trading(request, pk):
 	task = get_object_or_404(tradingTask, pk=pk)
-	logs = tradeLog.objects.filter(trade_task=task).order_by('-log_time')[0:10]
+	logs = tradeLog.objects.filter(trade_task=task).order_by('-log_time')[0:11]
 	json_return = []
 
 	for log in logs:
