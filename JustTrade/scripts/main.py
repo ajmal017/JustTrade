@@ -11,13 +11,16 @@ from tasks.models import tradingTask
 import json
 
 
-def Execute(pk,realtimeindex=True, symbol_list=["SPY"], strategy='Mean_Reversion'):
+def Execute(pk,realtimeindex=True,NPL =False, symbol_list=["SPY"], strategy='Mean_Reversion'):
 	task = tradingTask.objects.get(pk=pk)
 
 	if realtimeindex:
 		mode = "Realtime"
 	else:
-		mode = "Backtesting"
+		if not NPL:
+			mode = "Backtesting"
+		elif NPL:
+			mode = "NPL"
 
 	if mode == "Realtime":
 
@@ -110,6 +113,16 @@ def Execute(pk,realtimeindex=True, symbol_list=["SPY"], strategy='Mean_Reversion
 		performace_stats = port.output_summary_stats()
 		print performace_stats
 
+	elif mode =="NPL":
+		events = Queue.Queue()
+
+		# You need to change this to your directory
+		# symbol_list = ["SPY"]
+		# (self, events, csv_dir, symbol_list)
+		bars = data.RealTimeDataHandler(events, symbol_list)
+		strategy = TechnicalStrategies.Market_Information_Prediction(bars,events)
+		strategy.AlchemyAnalysis(symbol_list[0])
+
 	elif mode == "Backtesting":
 	    ##-------------Initialization-------------------------------------------
 	    # Declare the components with respective parameters
@@ -173,6 +186,9 @@ def Execute(pk,realtimeindex=True, symbol_list=["SPY"], strategy='Mean_Reversion
 	print performace_stats
 	print port.equity_curve
 
+	
+
+
 
 def run(pk):
-	Execute(pk,realtimeindex = False)
+	Execute(pk)
