@@ -7,40 +7,39 @@ Welcome!
 
 {% block content %}
 <div class="row">
-    <div class="col-sm-6 col-lg-4">
-        <div class="widget-simple-chart text-right card-box">
-            <div class="circliful-chart" data-dimension="90" data-text="35%" data-width="5" data-fontsize="14" data-percent="35" data-fgcolor="#5fbeaa" data-bgcolor="#505A66"></div>
-            <h3 class="text-success counter">2562</h3>
-            <p class="text-muted text-nowrap">纳斯达克</p>
-        </div>
-    </div>
-
-    <div class="col-sm-6 col-lg-4">
-        <div class="widget-simple-chart text-right card-box">
-            <div class="circliful-chart" data-dimension="90" data-text="75%" data-width="5" data-fontsize="14" data-percent="75" data-fgcolor="#3bafda" data-bgcolor="#505A66"></div>
-            <h3 class="text-primary counter">5685</h3>
-            <p class="text-muted text-nowrap">标普500</p>
-        </div>
-    </div>
-
-    <div class="col-sm-6 col-lg-4">
-        <div class="widget-simple-chart text-right card-box">
-            <div class="circliful-chart" data-dimension="90" data-text="58%" data-width="5" data-fontsize="14" data-percent="58" data-fgcolor="#f76397" data-bgcolor="#505A66"></div>
-            <h3 class="text-pink">$ <span class="counter">12480</span></h3>
-            <p class="text-muted text-nowrap">道琼斯</p>
-        </div>
-    </div>
-
-</div>
-<!-- end row -->
-
-<div class="row">
     <div class="col-lg-8">
-        <div class="card-box">
-            <h4 class="text-dark  header-title m-t-0 m-b-30">Total Revenue</h4>
+        <div class="widget-chart text-center">
+        <div class="portlet"><!-- /primary heading -->
+            <div class="portlet-heading">
+                <h3 class="portlet-title text-dark">
+                    Combine Statistics
+                </h3>
+                <div class="portlet-widgets">
+                    <a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a>
+                    <span class="divider"></span>
+                    <a data-toggle="collapse" data-parent="#accordion1" href="#portlet5"><i class="ion-minus-round"></i></a>
+                    <span class="divider"></span>
+                    <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div id="portlet5" class="panel-collapse collapse in">
+                <div class="portlet-body">
+                    <div id="combine-chart">
+                        <div id="combine-chart-container" class="flot-chart" style="height: 320px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 
+
+    <div class="col-lg-4">
+        <div class="card-box">
+            <h4 class="text-dark header-title m-t-0 m-b-30">Weekly Sales Report</h4>
             <div class="widget-chart text-center">
-                <div id="sparkline1"></div>
                 <ul class="list-inline m-t-15">
                     <li>
                         <h5 class="text-muted m-t-20">Target</h5>
@@ -60,6 +59,49 @@ Welcome!
 
     </div>
 
+</div>
+<!-- end row -->
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card-box">
+            <h4 class="text-dark  header-title m-t-0">Latest Projects</h4>
+            <p class="text-muted m-b-25 font-13">
+                Your awesome text goes here.
+            </p>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Task Symbol</th>
+                        <th>Task Strategy</th>
+                        <th>Start Date</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Assign</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for task in tasks %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><a href="/task/trade/{{ task.pk }}/">{{task.symbol}}</a></td>
+                            <td>{{task.strategy}}</td>
+                            <td>01/01/2016</td>
+                            <td>26/04/2016</td>
+                            <td><span class="label label-info">Released</span></td>
+                            <td>Coderthemes</td>
+                        </tr>
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- end col -8 -->
 
     <div class="col-lg-4">
         <div class="card-box">
@@ -84,14 +126,22 @@ Welcome!
             </div>
         </div>
 
+
     </div>
 
 </div>
+
 <!-- end row -->
+{% endblock %}
 
-
-<!--end row/ WEATHER -->
-
-{% include 'tasks/task_list.html' %}
-<!-- end row -->
+{% block js %}
+    <script src="{% get_static_prefix %}/plugins/flot-chart/jquery.flot.js"></script>
+    <script src="{% get_static_prefix %}/plugins/flot-chart/jquery.flot.time.js"></script>
+    <script src="{% get_static_prefix %}/plugins/flot-chart/jquery.flot.tooltip.min.js"></script>
+    <script src="{% get_static_prefix %}/plugins/flot-chart/jquery.flot.resize.js"></script>
+    <script src="{% get_static_prefix %}/plugins/flot-chart/jquery.flot.pie.js"></script>
+    <script src="{% get_static_prefix %}/plugins/flot-chart/jquery.flot.selection.js"></script>
+    <script src="{% get_static_prefix %}/plugins/flot-chart/jquery.flot.stack.js"></script>
+    <script src="{% get_static_prefix %}/plugins/flot-chart/jquery.flot.crosshair.js"></script>
+    <script src="{% get_static_prefix %}/js/jquery.flot.init.js"></script>
 {% endblock %}
