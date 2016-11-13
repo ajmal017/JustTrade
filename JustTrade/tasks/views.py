@@ -6,7 +6,7 @@ import json
 import subprocess
 from django.http import HttpRequest,JsonResponse
 from multiprocessing import Pool
-
+from scripts import main
 
 
 # Create your views here.
@@ -21,6 +21,13 @@ def trade(request,pk):
 
     return render(request, 'detail.html', {'task': task})
 
+
+def backtest(request,pk):
+	task = get_object_or_404(tradingTask,pk=pk)
+	result = main.Execute(pk,realtimeindex = False)
+	subset = result[['datetime', 'equity_curve', 'total']]
+	tuples = [tuple(x) for x in subset.values]
+	return render(request,'',{'task' = task,'tuples':tuples})
 
 
 # Page 3 View Controller

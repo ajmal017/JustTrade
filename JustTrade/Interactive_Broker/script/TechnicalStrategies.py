@@ -1,6 +1,8 @@
 from strategy import Strategy
 from event import SignalEvent
-
+import json
+import ast
+from watson_developer_cloud import AlchemyLanguageV1
 import numpy as np
 
 class RSI(Strategy):
@@ -80,6 +82,34 @@ class RSI(Strategy):
                     if RSI <= 30 or RSI >= 70:
                         self.events.put(signal)
 
+class Market_Information_Prediction(Strategy):
+
+    def __init__(self, bars, events):
+        """
+        Initialises the strategy,
+        Params:
+        bars: The DataHandler object that provides bar information
+        events: The Event Queue object
+        """
+        self.bars = bars
+        self.symbol_list = self.bars.symbol_list
+        self.events = events
+
+        # Initialize the holding status to False
+        self.bought = self._calculate_initial_bought()
+
+    def _calculate_initial_bought(self):
+        """
+        Set the holding status to False for all symbols
+        """
+        bought = {}
+        for s in self.symbol_list:
+            bought[s] =  False
+        return bought
+
+    def calculate_signals(self,event):
+        if event.type == "MARKET":
+            return 1
 
 
 class Mean_Reversion(Strategy):
@@ -149,4 +179,4 @@ class Mean_Reversion(Strategy):
                     elif curr_price < lower_band:
                         signal = SignalEvent(bars[0][0], bars[0][1], 'LONG', "strong")
                         self.events.put(signal)
-                        return {'name':bars[0][0], 'time':bars[0][1], 'type':'LONG', 'strength':"strong"}
+                        return {'name':bars[0][0],'time':bars[0][1], 'type':'LONG', 'strength':"strong"}

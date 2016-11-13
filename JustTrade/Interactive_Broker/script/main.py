@@ -14,7 +14,7 @@ if mode == "Backtesting":
     events = Queue.Queue()
     
     # You need to change this to your directory
-    rootpath = "C:/Users/Ruimin/Anaconda2/IBtrading/"
+    rootpath = "../"
     symbol_list = ["chart"]
     # (self, events, csv_dir, symbol_list)
     bars = data.HistoricCSVDataHandler(events, rootpath, symbol_list)
@@ -127,4 +127,4 @@ elif mode == "Realtime":
 # performace evaluation
     port.create_equity_curve_dataframe()
     performace_stats = port.output_summary_stats()
-    print performace_stats
+    return performace_stats
