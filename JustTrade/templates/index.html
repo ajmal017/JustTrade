@@ -8,19 +8,12 @@ Welcome!
 {% block content %}
 <div class="row">
     <div class="col-lg-8">
-        <div class="widget-chart text-center">
-        <div class="portlet"><!-- /primary heading -->
+    <div class="card-box">
+            <h4 class="text-dark header-title m-t-0 m-b-30">Market Indices</h4>
+            <div class="widget-chart text-center">
+
             <div class="portlet-heading">
-                <h3 class="portlet-title text-dark">
-                    Combine Statistics
-                </h3>
-                <div class="portlet-widgets">
-                    <a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a>
-                    <span class="divider"></span>
-                    <a data-toggle="collapse" data-parent="#accordion1" href="#portlet5"><i class="ion-minus-round"></i></a>
-                    <span class="divider"></span>
-                    <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
-                </div>
+
                 <div class="clearfix"></div>
             </div>
             <div id="portlet5" class="panel-collapse collapse in">
@@ -31,10 +24,9 @@ Welcome!
                     </div>
                 </div>
             </div>
+    </div>
+</div>
         </div>
-    </div>
-    </div>
-
 
     <div class="col-lg-4">
         <div class="card-box">
@@ -42,7 +34,7 @@ Welcome!
             <div class="widget-chart text-center">
                 <ul class="list-inline m-t-15">
                     <li>
-                        <h5 class="m-b-0">Nasdaq</h5>
+                        <h4 class="m-b-0">Nasdaq</h4>
                         <h3 class="m-b-0" id="nasdaq-last-price"></h3>
 
                     </li>
@@ -55,7 +47,7 @@ Welcome!
                 </ul>
                 <ul class="list-inline m-t-15">
                     <li>
-                        <h5 class="m-b-0">S&P 500</h5>
+                        <h4 class="m-b-0">S&P 500</h4>
                         <h3 class="m-b-0" id="sp500-last-price"></h3>
 
                     </li>
@@ -69,7 +61,7 @@ Welcome!
                 </ul>
                 <ul class="list-inline m-t-15">
                     <li>
-                        <h5 class="m-b-0">DJIA</h5>
+                        <h4 class="m-b-0">DJIA</h4>
                         <h3 class="m-b-0 text-success">18847.66</h3>
 
                     </li>
@@ -105,6 +97,7 @@ Welcome!
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Status</th>
+                        <th>Back Test</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -120,6 +113,7 @@ Welcome!
                             {% else %}
                             <td><span class="label label-danger">Stopped</span></td>
                             {% endif %}
+                            <td><a href="/task/trade/{{ task.pk }}/backtest/">Back test</a> </td>
                         </tr>
                     {% endfor %}
                     </tbody>

@@ -2,118 +2,258 @@
 {% load static %}
 
 {% block title %}
-    {{ task.symbol.name }}
+    {{ task.strategy.name }} - {{ task.symbol.name }} &nbsp;
+    <span class="label label-info">Back test</span>
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-8">
-        <div class="card-box">
-            <h4 class="text-dark  header-title m-t-0 m-b-30">Total Revenue</h4>
 
-            <div class="widget-chart text-center">
-                <div id="sparkline1"></div>
-                <ul class="list-inline m-t-15">
-                    <li>
-                        <h5 class="text-muted m-t-20">Target</h5>
-                        <h4 class="m-b-0">$1000</h4>
-                    </li>
-                    <li>
-                        <h5 class="text-muted m-t-20">Last week</h5>
-                        <h4 class="m-b-0">$523</h4>
-                    </li>
-                    <li>
-                        <h5 class="text-muted m-t-20">Last Month</h5>
-                        <h4 class="m-b-0">$965</h4>
-                    </li>
-                </ul>
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="card-box">
+                <h4 class="text-dark  header-title m-t-0 m-b-30" id="comp-name"></h4>
+
+                <div class="widget-chart text-center">
+                    <div id="sparkline1"></div>
+
+                    <ul class="list-inline m-t-10">
+                        <li style="width: 20%">
+                            <h4 class="text-muted m-t-25">Now</h4>
+                            <h3 class="m-b-0 text-danger" id="now"></h3>
+                        </li>
+                        <li style="width: 20%">
+                            <h4 class="text-muted m-t-25">Change</h4>
+                            <h3 class="m-b-0 text-danger" id="change"></h3>
+                        </li>
+                        <li style="width: 20%">
+                            <h4 class="text-muted m-t-25">Previous Close</h4>
+                            <h4 class="m-b-0" id="close"></h4>
+                        </li>
+                        <li style="width: 20%">
+                            <h4 class="text-muted m-t-25">Open</h4>
+                            <h4 class="m-b-0" id="open"></h4>
+                        </li>
+                    </ul>
+                </div>
             </div>
+
+        </div>
+
+
+        <div class="col-lg-3">
+            <div class="card-box">
+                <h4 class="text-dark header-title m-t-0 m-b-30">Settings</h4>
+
+                <div class="widget-chart text-center">
+                    <ul class="list-inline m-t-15">
+                        <li style="width: 40%">
+                            <h4 class="text-muted m-t-25">Start</h4>
+                            <input type="text" class="form-control" placeholder="mm/dd/yyyy">
+                        </li>
+
+
+                        <li style="width: 40%">
+                            <h4 class="text-muted m-t-25">End</h4>
+                            <input type="text" class="form-control" placeholder="mm/dd/yyyy">
+                        </li>
+
+                    </ul>
+                    <ul class="list-inline m-t-15">
+                        <li style="width: 40%">
+                            <h4 class="text-muted m-t-25">Time Interval</h4>
+                            <input type="text" class="form-control" placeholder="In seconds">
+                        </li>
+                    </ul>
+                    <ul class="list-inline m-t-15">
+                        <br>
+                         <a type="button" href="switch/" class="btn btn-info btn-sm waves-effect w-md waves-light m-b-5">Run back test</a>
+                    </ul>
+                </div>
+            </div>
+
         </div>
 
     </div>
+    <!-- end row -->
 
-
-    <div class="col-lg-4">
-        <div class="card-box">
-            <h4 class="text-dark header-title m-t-0 m-b-30">股票信息(52 high之类的)</h4>
-
-            <div class="widget-chart text-center">
-                <ul class="list-inline m-t-15">
-                    <li>
-                        <h5 class="text-muted m-t-20">Target</h5>
-                        <h4 class="m-b-0">$1000</h4>
-                    </li>
-                    <li>
-                        <h5 class="text-muted m-t-20">Last week</h5>
-                        <h4 class="m-b-0">$523</h4>
-                    </li>
-                    <li>
-                        <h5 class="text-muted m-t-20">Last Month</h5>
-                        <h4 class="m-b-0">$965</h4>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-    </div>
-
-</div>
-<!-- end row -->
-
-<div class="row">
-    <div class="col-lg-8">
-        <div class="card-box">
-            <h4 class="text-dark  header-title m-t-0">Log goes here</h4>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Trade task id</th>
-                        <th>Log time</th>
-                        <th>Log type</th>
-                        <th>Log info</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for task in tasks %}
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card-box">
+                <h4 class="text-dark  header-title m-t-0">Log goes here</h4>
+                <div class="table-responsive">
+                    <table class="table" id="vuetable">
+                        <thead>
                         <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td><a href="/task/trade/{{ task.pk }}/">{{task.symbol}}</a></td>
-                            <td >{{task.strategy}}</td>
-                            
-                            <td>01/01/2016</td>
-                            <td>26/04/2016</td>
-                            <td><span class="label label-info">Released</span></td>
-                            <td>Coderthemes</td>
+                            <th>#</th>
+                            <th>Log info</th>
+                            <th>Log type</th>
+                            <th>Log time</th>
                         </tr>
-
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td id="info1"></td>
+                            <td id="type1"></td>
+                            <td id="time1"></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td id="info2"></td>
+                            <td id="type2"></td>
+                            <td id="time2"></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td id="info3"></td>
+                            <td id="type3"></td>
+                            <td id="time3"></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td id="info4"></td>
+                            <td id="type4"></td>
+                            <td id="time4"></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td id="info5"></td>
+                            <td id="type5"></td>
+                            <td id="time5"></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td id="info6"></td>
+                            <td id="type6"></td>
+                            <td id="time6"></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td id="info7"></td>
+                            <td id="type7"></td>
+                            <td id="time7"></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td id="info8"></td>
+                            <td id="type8"></td>
+                            <td id="time8"></td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td id="info9"></td>
+                            <td id="type9"></td>
+                            <td id="time9"></td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td id="info10"></td>
+                            <td id="type10"></td>
+                            <td id="time10"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- end col -8 -->
+        <!-- end col -8 -->
 
-    <div class="col-lg-4">
-        <div class="card-box widget-user">
-            <div>
-                    <h4 class="m-t-0 m-b-5">Strategies Description</h4>
-                    <p class="text-muted m-b-5 font-13">kdsahfkjadshfjkdasfhjdsfhdksjlfkjsda</p>
-                    <small class="text-warning"><b>fdsf</b></small>
+        <div class="col-lg-4">
+            <div class="card-box widget-user">
+                {% if not task.is_active %}
+                    <a type="button" href="switch/"
+                       class="pull-right btn btn-success btn-sm waves-effect w-md waves-light m-b-5">Start Strategy</a>
+                {% else %}
+                    <a type="button" href="switch/"
+                       class="pull-right btn btn-danger btn-sm waves-effect w-md waves-light m-b-5">Stop Strategy</a>
+                {% endif %}
+                <h4 class="m-t-0 m-b-5">Strategy Description</h4>
+
+                <p class="text-muted m-b-5 font-13">{{ task.strategy.introduction }}</p>
             </div>
+            {#        <button id="updatelog">#}
+            {#            I update object 12345#}
+            {#        </button>#}
+
         </div>
-        <button onclick="refresh();">
-            I update object 12345
-        </button>
 
     </div>
 
-</div>
+    <!-- end row -->
 
 {% endblock %}
 
 {% block js %}
+    <script>
+        $(document).ready(function () {
+            {% if task.is_active %}
+                function refresh() {
+                    function getLog() {
+                        $.ajax({
+                            type: "GET",
+                            dataType: "json",
+                            url: 'updateinfo/',
+                            success: function (data) {
+                                for (var i = 0; i <= 10; i++) {
+                                    $('#time' + i).text(data[i].log_time);
+                                    $('#info' + i).text(data[i].log_info.info);
+                                    $('#type' + i).replaceWith("<td id=\"type" + i + "\"><span class=\"label label-info\">" + data[i].log_type + "<\/span><\/td>");
 
+                                }
+                            }
+                        });
+                    }
+
+                    var interval = setInterval(getLog, 500);
+                    getLog();
+                }
+                refresh();
+            {% else %}
+                function getLog() {
+                    $.ajax({
+                        type: "GET",
+                        dataType: "json",
+                        url: 'updateinfo/',
+                        success: function (data) {
+                            for (var i = 0; i <= 10; i++) {
+                                $('#time' + i).text(data[i].log_time);
+                                $('#info' + i).text(data[i].log_info.info);
+                                $('#type' + i).replaceWith("<td id=\"type" + i + "\"><span class=\"label label-info\">" + data[i].log_type + "<\/span><\/td>");
+
+                            }
+                        }
+                    });
+                }
+                getLog();
+
+            {% endif %}
+            function getMarketData() {
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22{{ task.symbol }}%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys",
+                    success: function (data) {
+                        var quote = data.query.results.quote;
+                        console.log(quote);
+                        $("#comp-name").text(quote.Name);
+                        $("#open").text("$" + quote.Open);
+                        $("#close").text("$" + quote.PreviousClose);
+                        $("#now").text("$" + quote.LastTradePriceOnly);
+                        $("#change").text(quote.Change + " | " + quote.ChangeinPercent);
+                        $("#dayshigh").text(quote.DaysHigh);
+                        $("#dayslow").text(quote.DaysLow);
+                        $("#yearshigh").text(quote.YearHigh);
+                        $("#yearslow").text(quote.YearLow);
+                        $("#volume").text(quote.Volume);
+                        $("#peratio").text(quote.PERatio);
+
+                    }
+                });
+            }
+
+            getMarketData();
+        });
+
+    </script>
 {% endblock %}
+
