@@ -20,7 +20,7 @@ def backtest(request,pk):
 	result = main.Execute(pk,realtimeindex = False)
 	subset = result[['datetime', 'equity_curve', 'total']]
 	tuples = [tuple(x) for x in subset.values]
-	return render(request,'',{'task' = task,'tuples':tuples})
+	return render(request,'',{'task':task,'tuples':tuples})
 
 
 
