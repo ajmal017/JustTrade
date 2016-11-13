@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import tradingTask, tradeLog
 
+
 class tradingTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = tradingTask

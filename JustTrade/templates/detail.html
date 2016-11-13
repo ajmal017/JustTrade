@@ -172,16 +172,14 @@
 
     <div class="col-lg-4">
         <div class="card-box widget-user">
-            <div>
-                    <h4 class="m-t-0 m-b-5">Strategy Description</h4>
                 {% if not task.is_active %}
-                    <a type="button" href="switch/" class="btn btn-success btn-sm waves-effect w-md waves-light m-b-5">Start Strategy</a>
+                    <a type="button" href="switch/" class="pull-right btn btn-success btn-sm waves-effect w-md waves-light m-b-5">Start Strategy</a>
                 {% else %}
-                    <a type="button" href="switch/" class="btn btn-danger btn-sm waves-effect w-md waves-light m-b-5">Stop Strategy</a>
+                    <a type="button" href="switch/" class="pull-right btn btn-danger btn-sm waves-effect w-md waves-light m-b-5">Stop Strategy</a>
                 {% endif %}
+            <h4 class="m-t-0 m-b-5">Strategy Description</h4>
 
-                    <p class="text-muted m-b-5 font-13">{{ task.strategy.introduction }}</p>
-            </div>
+            <p class="text-muted m-b-5 font-13">{{ task.strategy.introduction }}</p>
         </div>
 {#        <button id="updatelog">#}
 {#            I update object 12345#}

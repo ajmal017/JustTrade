@@ -51,7 +51,6 @@ def present_trading(request, pk):
 		                    'log_type': log.log_type,
 		                    'log_info': json.loads(log.log_info)})
 	json_return = json.dumps(json_return)
-
 	return HttpResponse(json_return, content_type='application/json')
 
 
