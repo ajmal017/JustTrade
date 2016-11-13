@@ -2,7 +2,7 @@ from strategy import Strategy
 from event import SignalEvent
 import json
 import ast
-from watson_developer_cloud import AlchemyLanguageV1
+from watson_developer_cloud import AlchemyLanguageV1,AlchemyDataNewsV1
 import numpy as np
 
 class RSI(Strategy):
@@ -126,9 +126,11 @@ class Market_Information_Prediction(Strategy):
             query_fields={'q.enriched.url.enrichedTitle.entities.entity': '|text={},type=company|'.format(text)})
         #print(json.dumps(results))
         temp=json.dumps(results)
-        dict=ast.literal_eval(temp)
-        res=dict['result']['docs']
-        #print(res)
+        _dict=ast.literal_eval(temp)
+        
+        res=_dict['result']['docs']
+        print(res)
+        print("sdfsdfsdfs")
         infolist=[]
         for i in range(0,len(res)):
             info={}
@@ -164,34 +166,35 @@ class Market_Information_Prediction(Strategy):
 
 
     def AlchemyAnalysis(self,text):
-            infolist=self.searchNews(text)
+            infolist=self.searchNews("Google")
 
             urllist=[]
             for i in range(0,len(infolist)):
                 url=infolist[i]['url']
-                print(url)
+                #print(url)
                 urllist.append(url)
             posnum = 0 # the number of the positive website
             totalnum = len(urllist)
             print('total number of websites:',totalnum)
-            for j in range(0,totalnum):
-                posnum += self.emotion(urllist[j])
-                print('Loop:',j)
-                #time.sleep(4000)
-            percent=posnum/totalnum
-            print(percent)
-            if percent > 0.9:
-                return SignalEvent(0,0,'LONG',"strong")
-            elif percent > 0.8:
-                return SignalEvent(0,0,'LONG',"mild")
-            elif percent > 0.7:
-                return SignalEvent(0,0,'LONG',"weak")
-            elif percent < 0.1:
-                return SignalEvent(0,0,'SHORT',"strong")
-            elif percent < 0.2:
-                return SignalEvent(0,0,'SHORT',"mild")
-            elif percent < 0.3:
-                return SignalEvent(0,0,'SHORT',"weak")
+            return infolist
+            # for j in range(0,totalnum):
+            #     posnum += self.emotion(urllist[j])
+            #     print('Loop:',j)
+            #     #time.sleep(4000)
+            # percent=posnum/totalnum
+            # print(percent)
+            # if percent > 0.9:
+            #     return SignalEvent(0,0,'LONG',"strong")
+            # elif percent > 0.8:
+            #     return SignalEvent(0,0,'LONG',"mild")
+            # elif percent > 0.7:
+            #     return SignalEvent(0,0,'LONG',"weak")
+            # elif percent < 0.1:
+            #     return SignalEvent(0,0,'SHORT',"strong")
+            # elif percent < 0.2:
+            #     return SignalEvent(0,0,'SHORT',"mild")
+            # elif percent < 0.3:
+            #     return SignalEvent(0,0,'SHORT',"weak")
 
 
     def calculate_signals(self,event):
