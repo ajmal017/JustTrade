@@ -14,7 +14,7 @@ def trade(request, pk):
 	task = get_object_or_404(tradingTask, pk=pk)
 	subprocess.Popen(['python', 'manage.py', 'runscript', 'main', '--script-args=1'])
 
-
+	return render(request,'detail.html',{'task':task})
 # for NLP Trading
 def IBM_trade(request,pk):
 
@@ -28,7 +28,7 @@ def IBM_trade(request,pk):
 # Page 3 View Controller
 def present_trading(request, pk):
 	task = get_object_or_404(tradingTask, pk=pk)
-	logs = tradeLog.objects.filter(trade_task=task).reverse()[0:10]
+	logs = tradeLog.objects.filter(trade_task=task).order_by('-log_time')[0:10]
 	json_return = []
 
 	for log in logs:

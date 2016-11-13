@@ -105,7 +105,7 @@ def Execute(pk,realtimeindex=True,NPL =False, symbol_list=["SPY"], strategy='Mea
 							log.save()
 
 							# 0.1-Second heartbeat, accelerate backtesting
-				time.sleep(60)
+				time.sleep(10)
 
 	# performace evaluation
 		port.create_equity_curve_dataframe()
@@ -123,61 +123,106 @@ def Execute(pk,realtimeindex=True,NPL =False, symbol_list=["SPY"], strategy='Mea
 		strategy.AlchemyAnalysis(symbol_list[0])
 
 	elif mode == "Backtesting":
-	    ##-------------Initialization-------------------------------------------
-	    # Declare the components with respective parameters
-	    events = Queue.Queue()
-	    
-	    # You need to change this to your directory
-	    rootpath = "../Interactive_Broker/"
-	    symbol_list = ["chart"]
-	    # (self, events, csv_dir, symbol_list)
-	    bars = data.HistoricCSVDataHandler(events, rootpath, symbol_list)
-	    
-	    strategy = TechnicalStrategies.Mean_Reversion(bars, events) #(self, bars, events)
-	    
-	    # (self, bars, events, start_date, initial_capital=100000.0)
-	    port = PortfolioWithSimpleRM.SimplePortfolio(bars, events, "12-5-2014", 10000000)
-	    
-	    broker = execution.SimulatedExecutionHandler(events)
-	    
-	    ##--------------Start backtesting-----------------------------------------
-	    while True:
-	        # Update the bars (specific backtest code, as opposed to live trading)
-	        if bars.continue_backtest == True:
-	            bars.update_bars()
-	        else:
-	            break
-	    
-	        # Handle the events
-	        while True:
-	            try:
-	                event = events.get(False)
-	            except Queue.Empty:
-	                break
-	            else:
-	                if event is not None:
-	                    if event.type == 'MARKET':
-	                        strategy.calculate_signals(event)
-	                        print "Market Event"
-	                        port.update_timeindex(event)
-	                        print "Portfolio Update"
-	                    
-	                    elif event.type == 'SIGNAL':
-	                        port.update_signal(event)
-	                        print "Portfolio Event"
-	                    
-	                    elif event.type == 'ORDER':
-	                        broker.execute_order(event)
-	                        print "Order Event"
-	                    #time.sleep(3) # just to make sure the order could be filled by the broker
-	                    
-	                    elif event.type == 'FILL':
-	                        port.update_fill(event)
-	                        print "Order Done"
+		##-------------Initialization-------------------------------------------
+		# Declare the components with respective parameters
+		events = Queue.Queue()
+
+		# You need to change this to your directory
+		rootpath = "~/Documents/automatedTrading/JustTrade/Interactive_Broker/"
+		symbol_list = ["chart"]
+		# (self, events, csv_dir, symbol_list)
+		bars = data.HistoricCSVDataHandler(events, rootpath, symbol_list)
+
+		strategy = TechnicalStrategies.Mean_Reversion(bars, events) #(self, bars, events)
+
+		# (self, bars, events, start_date, initial_capital=100000.0)
+		port = PortfolioWithSimpleRM.SimplePortfolio(bars, events, "12-5-2014", 10000000)
+
+		broker = execution.SimulatedExecutionHandler(events)
+
+			##--------------Start backtesting-----------------------------------------
+		while True:
+			# Update the bars (specific backtest code, as opposed to live trading)
+			if bars.continue_backtest == True:
+				bars.update_bars()
+			else:
+				break
+
+			while True:
+				try:
+					event = events.get(False)
+				except Queue.Empty:
+					break
+				else:
+					if event is not None:
+						if event.type == 'MARKET':
+							info = strategy.calculate_signals(event)
+							log = tradeLog.objects.create(trade_task=task)
+							log.log_type = 'Market Event'
+							print info
+							
+							if info:
+								info['time'] = 0
+								log.log_info = json.dumps(info)
+							else:
+								log.log_info = json.dumps({"info":"stay put"})
+							log.save()
+
+							info = port.update_timeindex(event)
+
+
+							log = tradeLog.objects.create(trade_task=task)
+							time.sleep(0.1)
+
+							log.log_type = 'Portfolio Update'
+							if info:
+								info['time'] = 0
+								log.log_info = json.dumps(info)
+							else:
+								log.log_info = json.dumps({"info":"no portfolio change"})	
+							log.save()
+							time.sleep(0.1)
+						elif event.type == 'SIGNAL':
+							time.sleep(0.1)
+							info = port.update_signal(event)
+
+							log = tradeLog.objects.create(trade_task=task)
+							log.log_type = 'Portfolio Event'
+							if info:
+								info['time'] = 0
+								log.log_info = json.dumps(info)
+							else:
+								log.log_info = json.dumps({"info":"no order has placed"})
+							log.save()
+						elif event.type == 'ORDER':
+							time.sleep(0.1)
+							info = broker.execute_order(event)
+
+							log = tradeLog.objects.create(trade_task=task)
+							log.log_type = 'Order Event'
+							if info:
+								info['time'] = 0
+								log.log_info = json.dumps(info)
+							else:
+								log.log_info = json.dumps({"info":"Just Ordered"})
+							log.save()
+							time.sleep(0.1) # just to make sure the order could be filled by the broker
+						elif event.type == 'FILL':
+							time.sleep(0.1)
+							info = port.update_fill(event)
+
+							log = tradeLog.objects.create(trade_task =task)
+							if info:
+								info['time'] = 0
+								log.log_info = json.dumps(info)
+							else:
+								log.log_info = json.dumps({"info":"Just finished order"})
+							log.log_type = 'Order Done'
+							log.save()
 
 	# 0.1-Second heartbeat, accelerate backtesting
 	                #time.sleep(0.1)
-	        #ime.sleep(0.1)
+	        time.sleep(0.1)
 
 	# performace evaluation
 	port.create_equity_curve_dataframe()
@@ -190,4 +235,4 @@ def Execute(pk,realtimeindex=True,NPL =False, symbol_list=["SPY"], strategy='Mea
 
 
 def run(pk):
-	Execute(pk)
+	Execute(pk,realtimeindex = False)
