@@ -35,8 +35,8 @@ def IBM_trade(request, pk):
 	task = get_object_or_404(tradingTask, pk=pk)
 	symbol_to_name = {'GOOG': 'Google', 'APPL': 'Apple', "TSLA": 'Tesla', 'BABA': 'Alibaba'}
 	name = symbol_to_name[task.symbol.name]
-	result = main.Execute(pk, realtimeindex=False,NPL = True symbol_list=[name])
-	return render(request, '', {"task": task, "result": result})
+	urls,result = main.Execute(pk, realtimeindex=False,NPL = True symbol_list=[name])
+	return render(request, '', {"task": task, "urls":urls,"result": result})
 
 
 # Page 3 View Controller

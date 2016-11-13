@@ -176,26 +176,27 @@ class Market_Information_Prediction(Strategy):
             posnum = 0 # the number of the positive website
             totalnum = len(urllist)
             print('total number of websites:',totalnum)
-            return infolist
+            
             # for j in range(0,totalnum):
             #     posnum += self.emotion(urllist[j])
             #     print('Loop:',j)
             #     #time.sleep(4000)
             # percent=posnum/totalnum
             # print(percent)
-            # if percent > 0.9:
-            #     return SignalEvent(0,0,'LONG',"strong")
-            # elif percent > 0.8:
-            #     return SignalEvent(0,0,'LONG',"mild")
-            # elif percent > 0.7:
-            #     return SignalEvent(0,0,'LONG',"weak")
-            # elif percent < 0.1:
-            #     return SignalEvent(0,0,'SHORT',"strong")
-            # elif percent < 0.2:
-            #     return SignalEvent(0,0,'SHORT',"mild")
-            # elif percent < 0.3:
-            #     return SignalEvent(0,0,'SHORT',"weak")
-
+            if percent > 0.9:
+                return infolist,['LONG',"strong"]
+            elif percent > 0.8:
+                return infolist,['LONG',"mild"]
+            elif percent > 0.7:
+                return infolist,['LONG',"weak"]
+            elif percent < 0.1:
+                return infolist,['SHORT',"strong"]
+            elif percent < 0.2:
+                return infolist,['SHORT',"mild"]
+            elif percent < 0.3:
+                return infolist,['SHORT',"weak"]
+            else:
+                return infolist,None 
 
     def calculate_signals(self,event):
         if event.type == "MARKET":

@@ -120,8 +120,8 @@ def Execute(pk,realtimeindex=True,NPL =False, waiting_time = 0.1,symbol_list=["S
 		# (self, events, csv_dir, symbol_list)
 		bars = data.RealTimeDataHandler(events, symbol_list)
 		strategy = TechnicalStrategies.Market_Information_Prediction(bars,events)
-		result = strategy.AlchemyAnalysis(symbol_list[0])
-		return result
+		urls,result = strategy.AlchemyAnalysis(symbol_list[0])
+		return urls,result
 
 	elif mode == "Backtesting":
 		##-------------Initialization-------------------------------------------
