@@ -8,8 +8,8 @@
 	"use strict";
 
 	var FlotChart = function() {
-		this.$body = $("body")
-		this.$realData = []
+		this.$body = $("body");
+		this.$realData = [];
 	};
 
 	//creates Combine Chart

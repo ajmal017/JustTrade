@@ -58,7 +58,7 @@ def Execute(pk,realtimeindex=True, symbol_list=["SPY"], strategy='Mean_Reversion
 							info = strategy.calculate_signals(event)
 
 							log = tradeLog.objects.create(trade_task=task)
-							log.log_type='Market Event'
+							log.log_type = 'Market Event'
 							if info:
 								log.log_info = json.dumps(info)
 							else:
@@ -68,7 +68,7 @@ def Execute(pk,realtimeindex=True, symbol_list=["SPY"], strategy='Mean_Reversion
 							info = port.update_timeindex(event)
 
 							log = tradeLog.objects.create(trade_task=task)
-							log.log_type='Portfolio Update'
+							log.log_type = 'Portfolio Update'
 							if info:
 								log.log_info = json.dumps(info)
 							else:
@@ -79,19 +79,18 @@ def Execute(pk,realtimeindex=True, symbol_list=["SPY"], strategy='Mean_Reversion
 							info = port.update_signal(event)
 
 							log = tradeLog.objects.create(trade_task=task)
-							log.log_type='Portfolio Event'
+							log.log_type = 'Portfolio Event'
 							if info:
 								log.log_info = json.dumps(info)
 							else:
 								log.log_info = json.dumps({"info":"no order has placed"})
 							log.save()
 
-
 						elif event.type == 'ORDER':
 							broker.execute_order(event)
 
 							log = tradeLog.objects.create(trade_task=task)
-							log.log_type='Order Event'
+							log.log_type = 'Order Event'
 							log.save()
 							time.sleep(3) # just to make sure the order could be filled by the broker
 
@@ -99,7 +98,7 @@ def Execute(pk,realtimeindex=True, symbol_list=["SPY"], strategy='Mean_Reversion
 							port.update_fill(event)
 
 							log = tradeLog.objects.create(trade_task =task)
-							log.log_type='Order Done'
+							log.log_type = 'Order Done'
 							log.save()
 
 							# 0.1-Second heartbeat, accelerate backtesting

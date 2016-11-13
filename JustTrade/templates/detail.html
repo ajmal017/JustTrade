@@ -2,7 +2,12 @@
 {% load static %}
 
 {% block title %}
-    {{ task.symbol.name }}
+    {{ task.strategy.name }} - {{ task.symbol.name }} &nbsp;
+    {% if task.is_active %}
+    <span class="label label-success">Strategy Active</span>
+    {% else %}
+    <span class="label label-error">Strategy On Hold</span>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -66,30 +71,76 @@
         <div class="card-box">
             <h4 class="text-dark  header-title m-t-0">Log goes here</h4>
             <div class="table-responsive">
-                <table class="table">
+                <table class="table" id="vuetable">
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Trade task id</th>
-                        <th>Log time</th>
-                        <th>Log type</th>
                         <th>Log info</th>
+                        <th>Log type</th>
+                        <th>Log time</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for task in tasks %}
                         <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td><a href="/task/trade/{{ task.pk }}/">{{task.symbol}}</a></td>
-                            <td >{{task.strategy}}</td>
-                            
-                            <td>01/01/2016</td>
-                            <td>26/04/2016</td>
-                            <td><span class="label label-info">Released</span></td>
-                            <td>Coderthemes</td>
+                            <td>1</td>
+                            <td id="info1"></td>
+                            <td id="type1"></td>
+                            <td id="time1"></td>
                         </tr>
-
-                    {% endfor %}
+                         <tr>
+                            <td>2</td>
+                            <td id="info2"></td>
+                            <td id="type2"></td>
+                            <td id="time2"></td>
+                        </tr>
+                         <tr>
+                            <td>3</td>
+                            <td id="info3"></td>
+                            <td id="type3"></td>
+                            <td id="time3"></td>
+                        </tr>
+                         <tr>
+                            <td>4</td>
+                            <td id="info4"></td>
+                            <td id="type4"></td>
+                            <td id="time4"></td>
+                        </tr>
+                         <tr>
+                            <td>5</td>
+                            <td id="info5"></td>
+                            <td id="type5"></td>
+                            <td id="time5"></td>
+                        </tr>
+                         <tr>
+                            <td>6</td>
+                            <td id="info6"></td>
+                            <td id="type6"></td>
+                            <td id="time6"></td>
+                        </tr>
+                         <tr>
+                            <td>7</td>
+                            <td id="info7"></td>
+                            <td id="type7"></td>
+                            <td id="time7"></td>
+                        </tr>
+                         <tr>
+                            <td>8</td>
+                            <td id="info8"></td>
+                            <td id="type8"></td>
+                            <td id="time8"></td>
+                        </tr>
+                         <tr>
+                            <td>9</td>
+                            <td id="info9"></td>
+                            <td id="type9"></td>
+                            <td id="time9"></td>
+                        </tr>
+                         <tr>
+                            <td>10</td>
+                            <td id="info10"></td>
+                            <td id="type10"></td>
+                            <td id="time10"></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -105,7 +156,7 @@
                     <small class="text-warning"><b>fdsf</b></small>
             </div>
         </div>
-        <button onclick="refresh();">
+        <button id="updatelog">
             I update object 12345
         </button>
 
@@ -118,27 +169,31 @@
 {% endblock %}
 
 {% block js %}
-    <script src="{% get_static_prefix %}plugins/vue/vue.min.js"></script>
-    <script>
-    var example1 = new Vue({
-      el: '#example-1',
-      data: {
-        items: [
-          { message: 'Foo' },
-          { message: 'Bar' }
-        ]
-      }
-    });
-
-   $(function refresh(){
+<script>
+$(document).ready(function(){
+    function refresh(){
         function call_counter(){
-            $.get('updateinfo/', function (data) {
-                $("#show_strategy").text(data.logs);
-                alert(data.logs);
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: 'updateinfo/',
+                success: function (data) {
+                    console.log(data);
+                    for(var i=0; i<=10; i++){
+                        $('#time'+i).text(data[i].log_time);
+                        $('#info'+i).text(data[i].log_info.info);
+                        $('#type'+i).append("<span class=\"label label-info\">" + data[i].log_type + "<\/span>");
+
+                    }
+                }
             });
         }
         var interval = setInterval(call_counter,5000);
         call_counter();
-        });
-    </script>
+    }
+    $("#updatelog").click(refresh);
+})
+
+</script>
 {% endblock %}
+
